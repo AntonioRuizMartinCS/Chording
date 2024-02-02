@@ -1,0 +1,103 @@
+<resources>
+    <string name="app_name">DP</string>
+    <string name="import_a_song">Import a song</string>
+    <string name="advanced">Advanced</string>
+    <string name="artist_name">Artist name</string>
+    <string name="song_title">Song title</string>
+    <string name="capo">Capo</string>
+    <string name="style">Style</string>
+    <string name="song_body">Song body</string>
+    <string name="save">Save</string>
+    <string name="tuning">Tuning</string>
+    <string name="key">Key</string>
+    <string name="john_lennon">John Lennon
+</string>
+    <string name="savedTabs">Saved Tabs:</string>
+    <string name="my_tabs">My tabs</string>
+    <string name="my_sets">My sets</string>
+    <string name="item">Item</string>
+    <string name="slash">-</string>
+    <string name="chords">Chords</string>
+    <string name="buttonforcontextmenu">ButtonForContextMenu</string>
+    <string name="todo">TODO</string>
+    <string name="cmdelete">Delete</string>
+    <string name="cmedit">Edit</string>
+    <string name="duration">duration</string>
+    <string name="twoDots">:</string>
+    <string name="imagine">Imagine</string>
+
+
+    <string-array name="capo">
+
+        <item>No Capo</item>
+        <item>1st fret</item>
+        <item>2nd fret</item>
+        <item>3rd fret</item>
+        <item>4th fret</item>
+        <item>5th fret</item>
+        <item>6th fret</item>
+        <item>7th fret</item>
+        <item>8th fret</item>
+        <item>9th fret</item>
+        <item>10th fret</item>
+        <item>11th fret</item>
+        <item>12th fret</item>
+
+    </string-array>
+
+    <string-array name="style">
+
+        <item>Undetermined</item>
+        <item>Country</item>
+        <item>Pop</item>
+        <item>Rock</item>
+        <item>Jazz</item>
+        <item>Metal</item>
+        <item>Funk</item>
+        <item>Classic</item>
+        <item>FingerStyle</item>
+
+    </string-array>
+
+    <string-array name="tuning">
+
+        <item>Undetermined</item>
+        <item>E A D G B E - Standard</item>
+        <item>Eb Ab Db Gb Bb Eb - Half-Step Down</item>
+        <item>E A D G C F - Perfect Fourth Tuning</item>
+        <item>A D G C E A - A tuning</item>
+        <item>B E A D F# B  - B tuning</item>
+        <item>C F Bb Eb G C - C tuning</item>
+
+
+    </string-array>
+
+    <string-array name="key">
+
+        <item>Undetermined</item>
+        <item>C</item>
+        <item>G</item>
+        <item>D</item>
+        <item>A</item>
+        <item>E</item>
+        <item>B</item>
+        <item>F#</item>
+        <item>Db</item>
+        <item>Ab</item>
+        <item>Eb</item>
+        <item>Bb</item>
+        <item>F</item>
+        <item>Dm</item>
+        <item>Am</item>
+        <item>Em</item>
+        <item>Bm</item>
+        <item>Fm</item>
+        <item>C#m</item>
+        <item>Gm</item>
+        <item>D#m</item>
+        <item>A#m</item>
+
+    </string-array>
+
+
+</resources>
