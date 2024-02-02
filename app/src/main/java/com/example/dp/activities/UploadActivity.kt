@@ -29,8 +29,8 @@ class UploadActivity : AppCompatActivity() {
     var style = ""
     var tuning = ""
     var key = ""
-    var seconds = 0
-    var minutes = 0
+    private var seconds = 0
+    private var minutes = 0
     private val dbHelper = TabsDBHelper(this)
 
 
@@ -60,25 +60,27 @@ class UploadActivity : AppCompatActivity() {
             val keySpinner: Spinner = binding.keySpinner
             val minutesPicker: NumberPicker = binding.durationPickerMinutes
             val secondsPicker: NumberPicker = binding.durationPickerSeconds
-            val secondsArray = (0..60 step 5).map { it.toString() }.toTypedArray()
+
 
 
 
             binding.numberOfTabs.text = dbHelper.allTabs.size.toString()
 
+
+//            https://medium.com/@sc71/android-numberpickers-3ef535c45487
             minutesPicker.minValue = 0
             minutesPicker.maxValue = 60
 
-            secondsPicker.displayedValues = secondsArray
             secondsPicker.minValue = 0
-            secondsPicker.maxValue = secondsArray.size - 1
+            secondsPicker.maxValue = 60
 
-            secondsPicker.setOnValueChangedListener(OnValueChangeListener { _, _, _ ->
-                seconds = secondsPicker.value
-            })
-            minutesPicker.setOnValueChangedListener(OnValueChangeListener { _, _, _ ->
-                minutes = secondsPicker.value
-            })
+
+            secondsPicker.setOnValueChangedListener { _, _, newVal ->
+                seconds = newVal -1
+            }
+            minutesPicker.setOnValueChangedListener { _, _, newVal ->
+                minutes = newVal -1
+            }
 
 
 
