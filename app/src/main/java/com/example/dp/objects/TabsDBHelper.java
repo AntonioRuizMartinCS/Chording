@@ -22,7 +22,6 @@ public class TabsDBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ARTIST = "ARTIST";
     public static final String COLUMN_SONG_BODY = "SONG_BODY";
     public static final String COLUMN_CAPO = "CAPO";
-    public static final String COLUMN_STYLE = "STYLE";
     public static final String COLUMN_TUNING = "TUNING";
     public static final String COLUMN_SONG_KEY = "SONG_KEY";
     public static final String COLUMN_CHORDS = "CHORDS";
@@ -45,12 +44,12 @@ public class TabsDBHelper extends SQLiteOpenHelper {
                 + COLUMN_ARTIST + " TEXT, "
                 + COLUMN_SONG_BODY + " TEXT, "
                 + COLUMN_CAPO + " TEXT, "
-                + COLUMN_STYLE + " TEXT, "
                 + COLUMN_TUNING + " TEXT, "
                 + COLUMN_SONG_KEY + " TEXT, "
+                + COLUMN_CHORDS + " TEXT, "
                 + COLUMN_MINUTES + " INTEGER, "
-                + COLUMN_SECONDS + " INTEGER, "
-                + COLUMN_CHORDS + " TEXT)";
+                + COLUMN_SECONDS + " INTEGER)";
+
         db.execSQL(createTableStatement);
 
     }
@@ -94,7 +93,6 @@ public class TabsDBHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_ARTIST, song.getArtist());
         cv.put(COLUMN_SONG_BODY, song.getSongBody());
         cv.put(COLUMN_CAPO, song.getCapo());
-        cv.put(COLUMN_STYLE, song.getStyle());
         cv.put(COLUMN_TUNING, song.getTuning());
         cv.put(COLUMN_SONG_KEY, song.getKey());
         cv.put(COLUMN_CHORDS, song.getSongChords().toString());
@@ -127,12 +125,11 @@ public class TabsDBHelper extends SQLiteOpenHelper {
                 String artist = cursor.getString(2);
                 String songBody = cursor.getString(3);
                 String capo = cursor.getString(4);
-                String style = cursor.getString(5);
-                String tuning = cursor.getString(6);
-                String key = cursor.getString(7);
-                String songChords = cursor.getString(8);
-                int minutes = cursor.getInt(9);
-                int seconds = cursor.getInt(10);
+                String tuning = cursor.getString(5);
+                String key = cursor.getString(6);
+                String songChords = cursor.getString(7);
+                int minutes = cursor.getInt(8);
+                int seconds = cursor.getInt(9);
 
 
                 String[] songChordsSplit = songChords.split(" ");
@@ -141,7 +138,7 @@ public class TabsDBHelper extends SQLiteOpenHelper {
                         Arrays.asList(songChordsSplit)
                 );
 
-                Song savedTab = new Song(tabID, songName, artist, songBody, capo, style, tuning, key, songChordsList, minutes, seconds);
+                Song savedTab = new Song(tabID, songName, artist, songBody, capo, tuning, key, songChordsList, minutes, seconds);
                 tabsList.add(savedTab);
 
             } while (cursor.moveToNext());
@@ -155,15 +152,13 @@ public class TabsDBHelper extends SQLiteOpenHelper {
     }
 
     public void updateTable(int id, String newSongName, String newArtistName,
-                            String newSongBody, String newCapo, String newStyle,
-                            String newTuning, String newKey, String newSongChordsList, int newMinutes, int newSeconds) {
+                            String newSongBody, String newCapo, String newTuning, String newKey, String newSongChordsList, int newMinutes, int newSeconds) {
 
         String query = "UPDATE " + TAB_TABLE + " SET " +
                 COLUMN_SONG_NAME + " = ?, " +
                 COLUMN_ARTIST + " = ?, " +
                 COLUMN_SONG_BODY + " = ?, " +
                 COLUMN_CAPO + " = ?, " +
-                COLUMN_STYLE + " = ?, " +
                 COLUMN_TUNING + " = ?, " +
                 COLUMN_SONG_KEY + " = ?, " +
                 COLUMN_CHORDS + " = ?, " +
@@ -178,13 +173,12 @@ public class TabsDBHelper extends SQLiteOpenHelper {
         stmt.bindString(2, newArtistName);
         stmt.bindString(3, newSongBody);
         stmt.bindString(4, newCapo);
-        stmt.bindString(5, newStyle);
-        stmt.bindString(6, newTuning);
-        stmt.bindString(7, newKey);
-        stmt.bindString(8, newSongChordsList);
-        stmt.bindLong(9, newMinutes);
-        stmt.bindLong(10, newSeconds);
-        stmt.bindLong(11, id);
+        stmt.bindString(5, newTuning);
+        stmt.bindString(6, newKey);
+        stmt.bindString(7, newSongChordsList);
+        stmt.bindLong(8, newMinutes);
+        stmt.bindLong(9, newSeconds);
+        stmt.bindLong(10, id);
 
         stmt.executeUpdateDelete();
         db.close();

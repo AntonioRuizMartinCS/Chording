@@ -1,12 +1,19 @@
 package com.example.dp.objects
 
-class ChordsFinder(
-    val songLines:List<String>
-) {
+class ChordsFinder {
 
-    private val musicChords: ArrayList<String> = arrayListOf(
+    private val lineDescriptions: ArrayList<String> = arrayListOf(
+
+        "verse", "intro", "instrumental", "verse:", "intro:", "instrumental:"
+
+    )
+
+     private val musicChords: ArrayList<String> = arrayListOf(
         // C Chords
         "C", "Cm", "C7", "C5", "Cdim", "Cdim7", "Caug", "Csus2", "Csus", "Cmaj7", "Cm7", "C7sus4", "Cmaj9", "Cmaj11", "Cmaj13", "Cmaj9(#11)", "Cmaj13(#11)", "Cadd9", "C6add9", "Cmaj7(b5)", "Cmaj7(#5)", "Cm6", "Cm9", "Cm11", "Cm13", "Cm(add9)", "Cm6add9", "Cmmaj7", "Cmmaj9", "Cm7b5", "Cm7#5", "C6", "C9", "C11", "C13", "C7b5", "C7#5", "C7b9", "C7#9", "C7(b5)", "C7(#5)", "C9b5", "C9#5", "C13#11", "C13b9", "C11b9", "Csus2sus4", "C-5",
+
+        // C# Chords
+        "C#m", "C#7", "C#m7", "C#7sus4", "C#maj9", "C#maj11", "C#maj13", "C#maj9(#11)", "C#maj13(#11)", "C#add9", "C#6add9", "C#maj7(b5)", "C#maj7(#5)", "C#m6", "C#m9", "C#m11", "C#m13", "C#m(add9)", "C#m6add9", "C#mmaj7", "C#mmaj9", "C#m7b5", "C#m7#5", "C#6", "C#9", "C#11", "C#13", "C#7b5", "C#7#5", "C#7b9", "C#7#9", "C#7(b5)", "C#7(#5)", "C#9b5", "C#9#5", "C#13#11", "C#13b9", "C#11b9", "C#sus2sus4", "C#-5",
 
         // C#/Db Chords
         "C#/Db", "C#/Dbm", "C#/Db7", "C#/Db5", "C#/Dbdim", "C#/Dbdim7", "C#/Dbaug", "C#/Dbsus2", "C#/Dbsus", "C#/Dbmaj7", "C#/Dbm7", "C#/Db7sus4", "C#/Dbmaj9", "C#/Dbmaj11", "C#/Dbmaj13", "C#/Dbmaj9(#11)", "C#/Dbmaj13(#11)", "C#/Dbadd9", "C#/Db6add9", "C#/Dbmaj7(b5)", "C#/Dbmaj7(#5)", "C#/Dbm6", "C#/Dbm9", "C#/Dbm11", "C#/Dbm13", "C#/Dbm(add9)", "C#/Dbm6add9", "C#/Dbmmaj7", "C#/Dbmmaj9", "C#/Dbm7b5", "C#/Dbm7#5", "C#/Db6", "C#/Db9", "C#/Db11", "C#/Db13", "C#/Db7b5", "C#/Db7#5", "C#/Db7b9", "C#/Db7#9", "C#/Db7(b5)", "C#/Db7(#5)", "C#/Db9b5", "C#/Db9#5", "C#/Db13#11", "C#/Db13b9", "C#/Db11b9", "C#/Dbsus2sus4", "C#/Db-5",
@@ -39,36 +46,82 @@ class ChordsFinder(
         "A#/Bb", "A#/Bbm", "A#/Bb7", "A#/Bb5", "A#/Bbdim", "A#/Bbdim7", "A#/Bbaug", "A#/Bbsus2", "A#/Bbsus", "A#/Bbmaj7", "A#/Bbm7", "A#/Bb7sus4", "A#/Bbmaj9", "A#/Bbmaj11", "A#/Bbmaj13", "A#/Bbmaj9(#11)", "A#/Bbmaj13(#11)", "A#/Bbadd9", "A#/Bb6add9", "A#/Bbmaj7(b5)", "A#/Bbmaj7(#5)", "A#/Bbm6", "A#/Bbm9", "A#/Bbm11", "A#/Bbm13", "A#/Bbm(add9)", "A#/Bbm6add9", "A#/Bbmmaj7", "A#/Bbmmaj9", "A#/Bbm7b5", "A#/Bbm7#5", "A#/Bb6", "A#/Bb9", "A#/Bb11", "A#/Bb13", "A#/Bb7b5", "A#/Bb7#5", "A#/Bb7b9", "A#/Bb7#9", "A#/Bb7(b5)", "A#/Bb7(b5)", "A#/Bb7(#5)", "A#/Bb7(#5)", "A#/Bb9b5", "A#/Bb9#5", "A#/Bb13#11", "A#/Bb13b9", "A#/Bb11b9", "A#/Bbsus2sus4", "A#/Bb-5",
 
         // B Chords
-        "B", "Bm", "B7", "B5", "Bdim", "Bdim7", "Baug", "Bsus2", "Bsus", "Bmaj7", "Bm7", "B7sus4", "Bmaj9", "Bmaj11", "Bmaj13", "Bmaj9(#11)", "Bmaj13(#11)", "Badd9", "B6add9", "Bmaj7(b5)", "Bmaj7(#5)", "Bm6", "Bm9", "Bm11", "Bm13", "Bm(add9)", "Bm6add9", "Bmmaj7", "Bmmaj9", "Bm7b5", "Bm7#5", "B6", "B9", "B11", "B13", "B7b5", "B7#5", "B7b9", "B7#9", "B7(b5)", "B7(b5)", "B7(#5)", "B7(#5)", "B9b5", "B9#5", "B13#11", "B13b9", "B11b9", "Bsus2sus4", "B-5"
-        )
+        "B", "Bm", "B7", "B5", "Bdim", "Bdim7", "Baug", "Bsus2", "Bsus", "Bmaj7", "Bm7", "B7sus4", "Bmaj9", "Bmaj11", "Bmaj13", "Bmaj9(#11)", "Bmaj13(#11)", "Badd9", "B6add9", "Bmaj7(b5)", "Bmaj7(#5)", "Bm6", "Bm9", "Bm11", "Bm13", "Bm(add9)", "Bm6add9", "Bmmaj7", "Bmmaj9", "Bm7b5", "Bm7#5", "B6", "B9", "B11", "B13", "B7b5", "B7#5", "B7b9", "B7#9", "B7(b5)", "B7(b5)", "B7(#5)", "B7(#5)", "B9b5", "B9#5", "B13#11", "B13b9", "B11b9", "Bsus2sus4", "B-5",
+
+        "D#m", "D#7", "D#m7", "D#7sus4", "D#maj9", "D#maj11", "D#maj13", "D#maj9(#11)", "D#maj13(#11)", "D#add9", "D#6add9", "D#maj7(b5)", "D#maj7(#5)", "D#m6", "D#m9", "D#m11", "D#m13", "D#m(add9)", "D#m6add9", "D#mmaj7", "D#mmaj9", "D#m7b5", "D#m7#5", "D#6", "D#9", "D#11", "D#13", "D#7b5", "D#7#5", "D#7b9", "D#7#9", "D#7(b5)", "D#7(#5)", "D#9b5", "D#9#5", "D#13#11", "D#13b9", "D#11b9", "D#sus2sus4", "D#-5",
+
+        // F# Chords
+        "F#m", "F#7", "F#m7", "F#7sus4", "F#maj9", "F#maj11", "F#maj13", "F#maj9(#11)", "F#maj13(#11)", "F#add9", "F#6add9", "F#maj7(b5)", "F#maj7(#5)", "F#m6", "F#m9", "F#m11", "F#m13", "F#m(add9)", "F#m6add9", "F#mmaj7", "F#mmaj9", "F#m7b5", "F#m7#5", "F#6", "F#9", "F#11", "F#13", "F#7b5", "F#7#5", "F#7b9", "F#7#9", "F#7(b5)", "F#7(#5)", "F#9b5", "F#9#5", "F#13#11", "F#13b9", "F#11b9", "F#sus2sus4", "F#-5",
+
+        // G# Chords
+        "G#m", "G#7", "G#m7", "G#7sus4", "G#maj9", "G#maj11", "G#maj13", "G#maj9(#11)", "G#maj13(#11)", "G#add9", "G#6add9", "G#maj7(b5)", "G#maj7(#5)", "G#m6", "G#m9", "G#m11", "G#m13", "G#m(add9)", "G#m6add9", "G#mmaj7", "G#mmaj9", "G#m7b5", "G#m7#5", "G#6", "G#9", "G#11", "G#13", "G#7b5", "G#7#5", "G#7b9", "G#7#9", "G#7(b5)", "G#7(#5)", "G#9b5", "G#9#5", "G#13#11", "G#13b9", "G#11b9", "G#sus2sus4", "G#-5",
+
+        // A# Chords
+        "A#m", "A#7", "A#m7", "A#7sus4", "A#maj9", "A#maj11", "A#maj13", "A#maj9(#11)", "A#maj13(#11)", "A#add9", "A#6add9", "A#maj7(b5)", "A#maj7(#5)", "A#m6", "A#m9", "A#m11", "A#m13", "A#m(add9)", "A#m6add9", "A#mmaj7", "A#mmaj9", "A#m7b5", "A#m7#5", "A#6", "A#9", "A#11", "A#13", "A#7b5", "A#7#5", "A#7b9", "A#7#9", "A#7(b5)", "A#7(#5)", "A#9b5", "A#9#5", "A#13#11", "A#13b9", "A#11b9", "A#sus2sus4", "A#-5",
+
+        // Cb Chords
+        "Cbm", "Cbmaj7", "Cbmaj9", "Cbmaj11", "Cbmaj13", "Cbmaj9(#11)", "Cbmaj13(#11)", "Cbm7", "Cbm9", "Cbm11", "Cbm13", "Cbmmaj7", "Cbmmaj9", "Cbm7b5", "Cbm7#5", "Cbm6", "Cbm6add9",
+
+        // Db Chords
+        "Dbm", "Dbmaj7", "Dbmaj9", "Dbmaj11", "Dbmaj13", "Dbmaj9(#11)", "Dbmaj13(#11)", "Dbm7", "Dbm9", "Dbm11", "Dbm13", "Dbmmaj7", "Dbmmaj9", "Dbm7b5", "Dbm7#5", "Dbm6", "Dbm6add9", "Dbm6add9", "Dbsus2", "Dbsus4", "Dbmadd9", "Dbm6add9", "Dbm9", "Dbm11", "Dbm13", "Dbmaj7b5", "Dbmaj7#5", "Dbmaj7#11", "Dbmaj9b5", "Dbmaj9#5", "Dbmaj11b9", "Dbmaj13b9", "Dbmaj13#11", "Dbsus2sus4", "Db-5",
+
+        // Eb Chords
+        "Ebm", "Ebmaj7", "Ebmaj9", "Ebmaj11", "Ebmaj13", "Ebmaj9(#11)", "Ebmaj13(#11)", "Ebm7", "Ebm9", "Ebm11", "Ebm13", "Ebmmaj7", "Ebmmaj9", "Ebm7b5", "Ebm7#5", "Ebm6", "Ebm6add9", "Ebm6add9", "Ebsus2", "Ebsus4", "Ebmadd9", "Ebm6add9", "Ebm9", "Ebm11", "Ebm13", "Ebmaj7b5", "Ebmaj7#5", "Ebmaj7#11", "Ebmaj9b5", "Ebmaj9#5", "Ebmaj11b9", "Ebmaj13b9", "Ebmaj13#11", "Ebsus2sus4", "Eb-5",
+
+        // Gb Chords
+        "Gbm", "Gbmaj7", "Gbmaj9", "Gbmaj11", "Gbmaj13", "Gbmaj9(#11)", "Gbmaj13(#11)", "Gbm7", "Gbm9", "Gbm11", "Gbm13", "Gbmmaj7", "Gbmmaj9", "Gbm7b5", "Gbm7#5", "Gbm6", "Gbm6add9", "Gbm6add9", "Gbsus2", "Gbsus4", "Gbmadd9", "Gbm6add9", "Gbm9", "Gbm11", "Gbm13", "Gbmaj7b5", "Gbmaj7#5", "Gbmaj7#11", "Gbmaj9b5", "Gbmaj9#5", "Gbmaj11b9", "Gbmaj13b9", "Gbmaj13#11", "Gbsus2sus4", "Gb-5",
+
+        // Ab Chords
+        "Abm", "Abmaj7", "Abmaj9", "Abmaj11", "Abmaj13", "Abmaj9(#11)", "Abmaj13(#11)", "Abm7", "Abm9", "Abm11", "Abm13", "Abmmaj7", "Abmmaj9", "Abm7b5", "Abm7#5", "Abm6", "Abm6add9", "Abm6add9", "Absus2", "Absus4", "Abmadd9", "Abm6add9", "Abm9", "Abm11", "Abm13", "Abmaj7b5", "Abmaj7#5", "Abmaj7#11", "Abmaj9b5", "Abmaj9#5", "Abmaj11b9", "Abmaj13b9", "Abmaj13#11", "Absus2sus4", "Ab-5",
+
+        // Bb Chords
+        "Bbm", "Bbmaj7", "Bbmaj9", "Bbmaj11", "Bbmaj13", "Bbmaj9(#11)", "Bbmaj13(#11)", "Bbm7", "Bbm9", "Bbm11", "Bbm13", "Bbmmaj7", "Bbmmaj9", "Bbm7b5", "Bbm7#5", "Bbm6", "Bbm6add9", "Bbm6add9", "Bbsus2", "Bbsus4", "Bbmadd9", "Bbm6add9", "Bbm9", "Bbm11", "Bbm13", "Bbmaj7b5", "Bbmaj7#5", "Bbmaj7#11", "Bbmaj9b5", "Bbmaj9#5", "Bbmaj11b9", "Bbmaj13b9", "Bbmaj13#11", "Bbsus2sus4", "Bb-5",
+
+        // B Chords
+        "Bbm", "Bbmaj7", "Bbmaj9", "Bbmaj11", "Bbmaj13", "Bbmaj9(#11)", "Bbmaj13(#11)", "Bbm7", "Bbm9", "Bbm11", "Bbm13", "Bbmmaj7", "Bbmmaj9", "Bbm7b5", "Bbm7#5", "Bbm6", "Bbm6add9", "Bbm6add9", "Bbsus2", "Bbsus4", "Bbmadd9", "Bbm6add9", "Bbm9", "Bbm11", "Bbm13", "Bbmaj7b5", "Bbmaj7#5", "Bbmaj7#11", "Bbmaj9b5", "Bbmaj9#5", "Bbmaj11b9", "Bbmaj13b9", "Bbmaj13#11", "Bbsus2sus4", "Bb-5"
+    )
 
 
+    fun findChords(chordsLines: List<String>): ArrayList<String> {
+        val chords = arrayListOf<String>()
 
+        for (chordLine in chordsLines) {
 
+            for (musicChord in musicChords){
 
-
-                 fun findChords(songLines:List<String>): ArrayList<String>{
-
-                     val songChords:ArrayList<String> = arrayListOf()
-
-
-                     for(songLine in songLines){
-
-                         for (musicChord in musicChords){
-
-                             if (songLine.contains(other = " $musicChord ", ignoreCase = false) || songLine.contains(other = " $musicChord", ignoreCase = false)
-                                 || songLine.contains(other = "$musicChord ", ignoreCase = false)) {
-
-                                 if(!songChords.contains(musicChord)){
-                                     songChords.add(musicChord)
-                                 }
-
-                             }
-
-                         }
-                        }
-
-                    return songChords
+                if (chordLine.contains(" $musicChord ")){
+                    if (!chords.contains(musicChord)){
+                        chords.add(musicChord)
+                    }
                 }
+            }
+        }
 
+        return chords
+    }
+
+    fun isItAChordsLine(songLine:String):Boolean{
+
+        for(musicChord in musicChords){
+
+            if(songLine.contains(" $musicChord ")){
+
+                return true
+            }
+
+        }
+     return false
+    }
+
+    fun isItDescriptionLine(songLine: String):Boolean{
+
+        for(lineDescription in lineDescriptions){
+
+            if(songLine.contains(lineDescription, ignoreCase = true)){
+
+                return true
+            }
+        }
+        return false
+}
 }

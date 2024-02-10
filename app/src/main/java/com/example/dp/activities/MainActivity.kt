@@ -5,10 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.dp.databinding.ActivityMainBinding
 import android.content.Intent
-import android.os.Build
-import android.provider.MediaStore
-import android.provider.MediaStore.Audio.Media
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dp.*
@@ -16,8 +12,6 @@ import com.example.dp.adapters.TabsRVAdapter
 import com.example.dp.models.TabsViewModel
 import com.example.dp.objects.Song
 import com.example.dp.objects.TabsDBHelper
-import java.io.File
-import java.io.InputStream
 
 
 class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, TabsRVAdapter.OnMenuItemClickListener {
@@ -84,7 +78,6 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
             it.putExtra("EXTRA_SONG_ARTIST", myTabsList[position].artist)
             it.putExtra("EXTRA_SONG_BODY", myTabsList[position].songBody)
             it.putExtra("EXTRA_SONG_CAPO", myTabsList[position].capo)
-            it.putExtra("EXTRA_SONG_STYLE", myTabsList[position].style)
             it.putExtra("EXTRA_SONG_TUNING", myTabsList[position].tuning)
             it.putExtra("EXTRA_SONG_KEY", myTabsList[position].key)
             it.putExtra("EXTRA_SONG_CHORDS", myTabsList[position].songChords)
@@ -110,7 +103,6 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
             it.putExtra("EXTRA_SONG_ARTIST", myTabsList[position].artist)
             it.putExtra("EXTRA_SONG_BODY", myTabsList[position].songBody)
             it.putExtra("EXTRA_SONG_CAPO", myTabsList[position].capo)
-            it.putExtra("EXTRA_SONG_STYLE", myTabsList[position].style)
             it.putExtra("EXTRA_SONG_TUNING", myTabsList[position].tuning)
             it.putExtra("EXTRA_SONG_KEY", myTabsList[position].key)
             it.putExtra("EXTRA_SONG_CHORDS", myTabsList[position].songChords)

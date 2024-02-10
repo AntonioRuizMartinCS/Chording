@@ -25,11 +25,36 @@ class FileImporter(
 
     }
 
-    fun findSongDuration(importedSongLines: ArrayList<String>): String {
+    fun findSongMinutes(importedSongLines: ArrayList<String>): Int{
 
-        val songKeyLine = importedSongLines[4]
+        var minutes = 0
 
-        return songKeyLine.substring(songKeyLine.lastIndexOf(":") + 1, songKeyLine.length)
+
+        for (importedSongLine in importedSongLines){
+            if (importedSongLine.contains("duration", ignoreCase = true)){
+
+            minutes = importedSongLine.substring(importedSongLine.indexOf(":")+1, importedSongLine.lastIndexOf(":")).trim().toInt()
+
+            }
+        }
+
+        return minutes
+
+    }
+
+    fun findSongSeconds(importedSongLines: ArrayList<String>): Int{
+
+        var seconds = 0
+
+        for (importedSongLine in importedSongLines){
+
+            if (importedSongLine.contains("duration", ignoreCase = true)) {
+
+                seconds =
+                    importedSongLine.substring(importedSongLine.lastIndexOf(":") + 1).trim().toInt()
+            }
+        }
+        return seconds
 
     }
 

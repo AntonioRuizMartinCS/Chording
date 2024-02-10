@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import android.widget.NumberPicker.OnValueChangeListener
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dp.R
@@ -26,7 +25,6 @@ class UploadActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUploadBinding
     private var tabs: ArrayList<Song> = arrayListOf()
     var capo = ""
-    var style = ""
     var tuning = ""
     var key = ""
     private var seconds = 0
@@ -214,6 +212,8 @@ class UploadActivity : AppCompatActivity() {
                 binding.editSongTitle.setText(fileImporter.findSongName(readTextFromUri(uri)))
                 binding.editArtistName.setText(fileImporter.findSongArtist(readTextFromUri(uri)))
                 binding.songBody.setText(fileImporter.findSongBody(readTextFromUri(uri)))
+                binding.durationPickerMinutes.value = fileImporter.findSongMinutes(readTextFromUri(uri))
+                binding.durationPickerSeconds.value = fileImporter.findSongSeconds(readTextFromUri(uri))
 
 
             }
@@ -247,11 +247,11 @@ class UploadActivity : AppCompatActivity() {
         val songName = binding.editSongTitle.text.toString()
         val artist = binding.editArtistName.text.toString()
         val songBody = binding.songBody.text.toString()
-        val chordsFinder = ChordsFinder(songBody.split("\r\n"))
-        val songChords = chordsFinder.findChords(songBody.split("\r\n"))
+        val chordsFinder = ChordsFinder()
+        val songChords: ArrayList<String> = chordsFinder.findChords(songBody.split("\r\n"))
 
 
-        val song = Song(songID, songName, artist, songBody, capo, style, tuning, key, songChords, minutes, seconds)
+        val song = Song(songID, songName, artist, songBody, capo, tuning, key, songChords, minutes, seconds)
 
         tabs.add(song)
 
