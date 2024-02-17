@@ -1,14 +1,18 @@
 package com.example.dp.activities
 
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import com.example.dp.databinding.ActivityMainBinding
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dp.*
 import com.example.dp.adapters.TabsRVAdapter
+import com.example.dp.databinding.ActivityMainBinding
 import com.example.dp.models.TabsViewModel
 import com.example.dp.objects.Song
 import com.example.dp.objects.TabsDBHelper
@@ -31,25 +35,73 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
 
         tabsDBHelper = TabsDBHelper(this)
 
-//        tabsDBHelper.deleteTabsTable()
+//        tabsDBHelper.deleteTables()
         myTabsList = tabsDBHelper.allTabs
 
-        createAddBtn()
-        createRecyclerView()
+        createButtons()
+        createTabsRecyclerView()
     }
 
-    private fun createAddBtn(){
+    private fun createButtons(){
 
         val addBtn = binding.addBtn
+        val setsBtn = binding.mySetsLabel
+        val tabsBtn = binding.myTabsLabel
+        val addSetBtn = binding.addSetButton
 
         addBtn.setOnClickListener{
             Intent(this, UploadActivity::class.java).also {
                 startActivity(it)
             }
         }
+
+        setsBtn.setOnClickListener{
+            binding.setsRecyclerView.visibility = View.VISIBLE
+            binding.tabsRecyclerView.visibility = View.INVISIBLE
+            binding.addSetButton.visibility = View.VISIBLE
+        }
+        tabsBtn.setOnClickListener{
+            binding.setsRecyclerView.visibility = View.INVISIBLE
+            binding.tabsRecyclerView.visibility = View.VISIBLE
+            binding.addSetButton.visibility = View.INVISIBLE
+        }
+
+        addSetBtn.setOnClickListener{
+//            https://stackoverflow.com/questions/4134117/edittext-on-a-popup-window
+
+            val alert: AlertDialog.Builder = AlertDialog.Builder(this)
+
+            alert.setTitle("add set name")
+            alert.setMessage("Message")
+
+            // Set an EditText view to get user input
+
+            // Set an EditText view to get user input
+            val input = EditText(this)
+            alert.setView(input)
+
+            alert.setPositiveButton("Ok", DialogInterface.OnClickListener { _, _ ->
+                // Do something with value!
+                tabsDBHelper.addOneSet(input.text.toString())
+
+            })
+
+            alert.setNegativeButton("Cancel",
+                DialogInterface.OnClickListener { _, _ ->
+                    // Canceled.
+                })
+
+            alert.show()
+
+
+        }
+
+
+
+
     }
 
-    private fun createRecyclerView(){
+    private fun createTabsRecyclerView(){
 
         val tabsRecyclerView = findViewById<RecyclerView>(R.id.tabsRecyclerView)
 
@@ -68,6 +120,10 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
         tabsRecyclerView.adapter = adapter
 
     }
+
+
+
+
 
     override fun onItemClick(position: Int) {
 
@@ -92,7 +148,7 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
 
         tabsDBHelper.deleteOneTab(myTabsList[position])
         myTabsList.removeAt(position)
-        createRecyclerView()
+        createTabsRecyclerView()
     }
 
     override fun onEditClicked(position: Int) {

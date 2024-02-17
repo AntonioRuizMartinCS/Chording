@@ -259,7 +259,7 @@ class UploadActivity : AppCompatActivity() {
 
         val dbHelper = TabsDBHelper(this)
 
-        val success:Boolean = dbHelper.addOne(song)
+        val success:Boolean = dbHelper.addOneSong(song)
 
         if (success){
             Toast.makeText(this, "Tab was saved successfully", Toast.LENGTH_SHORT).show()

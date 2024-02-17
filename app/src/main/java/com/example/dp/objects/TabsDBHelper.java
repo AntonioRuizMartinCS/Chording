@@ -17,7 +17,13 @@ import java.util.Arrays;
 public class TabsDBHelper extends SQLiteOpenHelper {
 
     public static final String TAB_TABLE = "TAB_TABLE";
-    public static final String COLUMN_ID = "ID";
+    public static final String SETS_TABLE = "SETS_TABLE";
+    public static final String COLUMN_SET_ID = "SET_ID";
+    public static final String SET_NAME = "SET_NAME";
+
+    public static final String SONG_SETS_TABLE = "SONG_SETS_TABLE";
+
+    public static final String COLUMN_SONG_ID = "SONG_ID";
     public static final String COLUMN_SONG_NAME = "SONG_NAME";
     public static final String COLUMN_ARTIST = "ARTIST";
     public static final String COLUMN_SONG_BODY = "SONG_BODY";
@@ -39,7 +45,7 @@ public class TabsDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String createTableStatement = "CREATE TABLE " + TAB_TABLE + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+        String createTableStatement = "CREATE TABLE " + TAB_TABLE + " (" + COLUMN_SONG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_SONG_NAME + " TEXT, "
                 + COLUMN_ARTIST + " TEXT, "
                 + COLUMN_SONG_BODY + " TEXT, "
@@ -52,6 +58,23 @@ public class TabsDBHelper extends SQLiteOpenHelper {
 
         db.execSQL(createTableStatement);
 
+        String createSecondTableStatement = "CREATE TABLE " + SETS_TABLE + " ("
+                + COLUMN_SET_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + SET_NAME + " TEXT)";
+
+        db.execSQL(createSecondTableStatement);
+
+
+
+        String createJunctionTableStatement = "CREATE TABLE " + SONG_SETS_TABLE + " ("
+                + COLUMN_SONG_ID + " INTEGER, "
+                + COLUMN_SET_ID + " INTEGER, "
+                + "FOREIGN KEY(" + COLUMN_SONG_ID + ") REFERENCES " + TAB_TABLE + "(" + COLUMN_SONG_ID + "), "
+                + "FOREIGN KEY(" + COLUMN_SET_ID + ") REFERENCES " + SETS_TABLE + "(" + COLUMN_SET_ID + "))";
+
+
+        db.execSQL(createJunctionTableStatement);
+
     }
 
     //called when the db is updated. Provides forward compatibility
@@ -60,9 +83,12 @@ public class TabsDBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void deleteTabsTable() {
+    public void deleteTables() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + TAB_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SETS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SONG_SETS_TABLE);
+
         onCreate(db);
         db.close();
     }
@@ -70,7 +96,7 @@ public class TabsDBHelper extends SQLiteOpenHelper {
     public boolean deleteOneTab(Song song) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-        String queryString = "DELETE FROM " + TAB_TABLE + " WHERE " + COLUMN_ID + " = " + song.getId();
+        String queryString = "DELETE FROM " + TAB_TABLE + " WHERE " + COLUMN_SONG_ID + " = " + song.getId();
 
         Cursor cursor = db.rawQuery(queryString, null);
 
@@ -84,7 +110,7 @@ public class TabsDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean addOne(Song song) {
+    public boolean addOneSong(Song song) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -103,6 +129,46 @@ public class TabsDBHelper extends SQLiteOpenHelper {
         long insert = db.insert(TAB_TABLE, null, cv);
 
         return insert != -1;
+    }
+
+    public boolean addOneSet(String setName) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(SET_NAME, setName);
+
+        long insert = db.insert(SETS_TABLE, null, cv);
+
+        return insert != -1;
+    }
+
+    public ArrayList<String> getAllSets(){
+
+        ArrayList<String> setsList = new ArrayList<>();
+        String queryString = "SELECT * FROM " + SETS_TABLE;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()) {
+//            loop through the cursor (result set) and create new tab objects
+            do {
+
+                int setID = cursor.getInt(0);
+                String setName = cursor.getString(1);
+
+                setsList.add(setName);
+
+
+            } while (cursor.moveToNext());
+
+        }
+
+        cursor.close();
+        db.close();
+        return setsList;
     }
 
 
@@ -164,7 +230,7 @@ public class TabsDBHelper extends SQLiteOpenHelper {
                 COLUMN_CHORDS + " = ?, " +
                 COLUMN_MINUTES + " = ?, " +
                 COLUMN_SECONDS + " = ? " +
-                "WHERE " + COLUMN_ID + " = ?";
+                "WHERE " + COLUMN_SONG_ID + " = ?";
 
         SQLiteDatabase db = this.getWritableDatabase();
         SQLiteStatement stmt = db.compileStatement(query);

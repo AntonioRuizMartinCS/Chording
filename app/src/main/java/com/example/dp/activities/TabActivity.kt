@@ -61,7 +61,7 @@ class TabActivity : AppCompatActivity() {
 
 
         val finalArray = arrayListOf<String>()
-        val songLines:ArrayList<String> = tab.songBody.split("\n") as ArrayList<String>
+        val songLines:List<String> = tab.songBody.split("\n")
 
         //gets the width of layout after its been set
         binding.tabViewLinearLayout.post {
