@@ -1,28 +1,29 @@
 package com.example.dp.adapters
 
-import android.view.*
-import android.view.View.OnClickListener
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dp.R
-import com.example.dp.models.TabsViewModel
+import com.example.dp.models.SetsViewModel
 
-class TabsRVAdapter(
-    private val mList: List<TabsViewModel>,
+
+class SetsRVAdapter(
+    private val mList: List<SetsViewModel>,
     private val listener: OnItemClickListener,
     private val menuItemClickListener: OnMenuItemClickListener
-                    ) : RecyclerView.Adapter<TabsRVAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<SetsRVAdapter.ViewHolder>() {
 
 
 
-    // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
         // that is used to hold list item
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.tabs_card_layout, parent, false)
+            .inflate(R.layout.sets_card_layout, parent, false)
 
         return ViewHolder(view)
     }
@@ -30,12 +31,11 @@ class TabsRVAdapter(
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val tabsViewModel = mList[position]
+        val setsViewModel = mList[position]
 
         // sets the text to the textview from our itemHolder class
-        holder.songName.text = tabsViewModel.songName
-        holder.artistName.text = tabsViewModel.artistName
-        holder.optionsButton.setImageResource(tabsViewModel.optionsButton)
+        holder.setName.text = setsViewModel.setName
+        holder.optionsButton.setImageResource(setsViewModel.optionsButton)
         holder.optionsButton.setOnClickListener { createPopUpMenu(holder.optionsButton, position)}
 
 
@@ -48,11 +48,11 @@ class TabsRVAdapter(
     }
 
     // Holds the views for adding it to image and text
-   inner class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView), OnClickListener {
+    inner class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView),
+        View.OnClickListener {
 
-        val songName: TextView = itemView.findViewById(R.id.cardSongName)
+        val setName: TextView = itemView.findViewById(R.id.cardSetName)
         var optionsButton: ImageView = itemView.findViewById(R.id.optionsButtonImageView)
-        val artistName: TextView = itemView.findViewById(R.id.cardArtistName)
 
         init {
             itemView.setOnClickListener(this)
@@ -63,7 +63,7 @@ class TabsRVAdapter(
         override fun onClick(p0: View?) {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                listener.onItemClick(position)
+                listener.onItemSetClick(position)
             }
         }
 
@@ -71,15 +71,15 @@ class TabsRVAdapter(
 
     }
     interface OnItemClickListener{
-        fun onItemClick(position: Int)
+        fun onItemSetClick(position: Int)
     }
 
     interface OnMenuItemClickListener{
-        fun onDeleteClicked(position: Int)
-        fun onEditClicked(position: Int)
+        fun onDeleteSetClicked(position: Int)
+        fun onEditSetClicked(position: Int)
     }
 
-    private fun createPopUpMenu(view:View, position: Int){
+    private fun createPopUpMenu(view: View, position: Int){
 
         val popupMenu = PopupMenu(view.context, view)
         popupMenu.menuInflater.inflate(R.menu.tab_context_menu, popupMenu.menu)
@@ -87,9 +87,9 @@ class TabsRVAdapter(
         popupMenu.setOnMenuItemClickListener { item ->
             when(item.itemId){
 
-                R.id.cmDelete -> menuItemClickListener.onDeleteClicked(position)
+                R.id.cmDelete -> menuItemClickListener.onDeleteSetClicked(position)
 
-                R.id.cmEdit -> menuItemClickListener.onEditClicked(position)
+                R.id.cmEdit -> menuItemClickListener.onEditSetClicked(position)
 
             }
             true
@@ -97,7 +97,3 @@ class TabsRVAdapter(
         popupMenu.show()
     }
 }
-
-
-
-

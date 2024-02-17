@@ -109,6 +109,22 @@ public class TabsDBHelper extends SQLiteOpenHelper {
 
     }
 
+    public boolean deleteOneSet(Set set) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String queryString = "DELETE FROM " + SETS_TABLE + " WHERE " + COLUMN_SET_ID + " = " + set.getSetID();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()) {
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
 
     public boolean addOneSong(Song song) {
 
@@ -131,21 +147,21 @@ public class TabsDBHelper extends SQLiteOpenHelper {
         return insert != -1;
     }
 
-    public boolean addOneSet(String setName) {
+    public boolean addOneSet(Set set) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(SET_NAME, setName);
+        cv.put(SET_NAME, set.getSetName());
 
         long insert = db.insert(SETS_TABLE, null, cv);
 
         return insert != -1;
     }
 
-    public ArrayList<String> getAllSets(){
+    public ArrayList<Set> getAllSets(){
 
-        ArrayList<String> setsList = new ArrayList<>();
+        ArrayList<Set> setsList = new ArrayList<>();
         String queryString = "SELECT * FROM " + SETS_TABLE;
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -159,7 +175,8 @@ public class TabsDBHelper extends SQLiteOpenHelper {
                 int setID = cursor.getInt(0);
                 String setName = cursor.getString(1);
 
-                setsList.add(setName);
+                Set savedSet = new Set(setID, setName);
+                setsList.add(savedSet);
 
 
             } while (cursor.moveToNext());

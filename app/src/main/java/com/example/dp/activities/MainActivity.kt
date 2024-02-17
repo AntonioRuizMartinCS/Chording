@@ -11,18 +11,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dp.*
+import com.example.dp.adapters.SetsRVAdapter
 import com.example.dp.adapters.TabsRVAdapter
 import com.example.dp.databinding.ActivityMainBinding
+import com.example.dp.models.SetsViewModel
 import com.example.dp.models.TabsViewModel
 import com.example.dp.objects.Song
 import com.example.dp.objects.TabsDBHelper
 
 
-class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, TabsRVAdapter.OnMenuItemClickListener {
+class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, TabsRVAdapter.OnMenuItemClickListener, SetsRVAdapter.OnItemClickListener, SetsRVAdapter.OnMenuItemClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var tabsDBHelper: TabsDBHelper
     private lateinit var myTabsList:ArrayList<Song>
+    private lateinit var mySetsList:ArrayList<com.example.dp.objects.Set>
 
 
 
@@ -37,9 +40,10 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
 
 //        tabsDBHelper.deleteTables()
         myTabsList = tabsDBHelper.allTabs
+        mySetsList = tabsDBHelper.allSets
 
         createButtons()
-        createTabsRecyclerView()
+        createRecyclersView()
     }
 
     private fun createButtons(){
@@ -82,7 +86,15 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
 
             alert.setPositiveButton("Ok", DialogInterface.OnClickListener { _, _ ->
                 // Do something with value!
-                tabsDBHelper.addOneSet(input.text.toString())
+
+                val setID = mySetsList.size + 1
+                val setName = input.text.toString()
+
+                val newSet = com.example.dp.objects.Set(setID,setName)
+                tabsDBHelper.addOneSet(newSet)
+
+                mySetsList = tabsDBHelper.allSets
+                createRecyclersView()
 
             })
 
@@ -95,29 +107,36 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
 
 
         }
-
-
-
-
     }
 
-    private fun createTabsRecyclerView(){
+    private fun createRecyclersView(){
 
         val tabsRecyclerView = findViewById<RecyclerView>(R.id.tabsRecyclerView)
+        val setsRecyclerView = findViewById<RecyclerView>(R.id.setsRecyclerView)
 
         tabsRecyclerView.layoutManager = LinearLayoutManager(this)
+        setsRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        val data = ArrayList<TabsViewModel>()
+        val tabsData = ArrayList<TabsViewModel>()
+        val setsData = ArrayList<SetsViewModel>()
 
         for (i in 0 until myTabsList.size){
-            data.add(
+            tabsData.add(
                 TabsViewModel(myTabsList[i].songName, myTabsList[i].artist, R.drawable.baseline_more_vert_24)
             )
         }
 
-        val adapter = TabsRVAdapter(data, this, this)
+        for (i in 0 until mySetsList.size){
+            setsData.add(
+                SetsViewModel(mySetsList[i].setName, R.drawable.baseline_more_vert_24)
+            )
+        }
 
-        tabsRecyclerView.adapter = adapter
+        val tabsAdapter = TabsRVAdapter(tabsData, this, this)
+        val setsAdapter = SetsRVAdapter(setsData, this, this)
+
+        tabsRecyclerView.adapter = tabsAdapter
+        setsRecyclerView.adapter = setsAdapter
 
     }
 
@@ -145,10 +164,10 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
     }
 
     override fun onDeleteClicked(position: Int) {
-
         tabsDBHelper.deleteOneTab(myTabsList[position])
         myTabsList.removeAt(position)
-        createTabsRecyclerView()
+
+        createRecyclersView()
     }
 
     override fun onEditClicked(position: Int) {
@@ -167,6 +186,20 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
 
             startActivity(it)
         }
+    }
+
+    override fun onDeleteSetClicked(position: Int) {
+        tabsDBHelper.deleteOneSet(mySetsList[position])
+        mySetsList.removeAt(position)
+        createRecyclersView()
+    }
+
+    override fun onEditSetClicked(position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onItemSetClick(position: Int) {
+        TODO("Not yet implemented")
     }
 }
 
