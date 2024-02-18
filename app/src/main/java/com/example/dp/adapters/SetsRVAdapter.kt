@@ -77,12 +77,14 @@ class SetsRVAdapter(
     interface OnMenuItemClickListener{
         fun onDeleteSetClicked(position: Int)
         fun onEditSetClicked(position: Int)
+
+        fun onAddSongToSetClicked(position: Int)
     }
 
     private fun createPopUpMenu(view: View, position: Int){
 
         val popupMenu = PopupMenu(view.context, view)
-        popupMenu.menuInflater.inflate(R.menu.tab_context_menu, popupMenu.menu)
+        popupMenu.menuInflater.inflate(R.menu.set_context_menu, popupMenu.menu)
 
         popupMenu.setOnMenuItemClickListener { item ->
             when(item.itemId){
@@ -90,6 +92,8 @@ class SetsRVAdapter(
                 R.id.cmDelete -> menuItemClickListener.onDeleteSetClicked(position)
 
                 R.id.cmEdit -> menuItemClickListener.onEditSetClicked(position)
+
+                R.id.cmAddSong -> menuItemClickListener.onAddSongToSetClicked(position)
 
             }
             true

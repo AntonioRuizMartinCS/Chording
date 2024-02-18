@@ -147,6 +147,19 @@ public class TabsDBHelper extends SQLiteOpenHelper {
         return insert != -1;
     }
 
+    public boolean addSongToSet(Song song, Set set){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COLUMN_SONG_ID, song.getId());
+        cv.put(COLUMN_SET_ID, set.getSetID());
+
+        long insert = db.insert(SONG_SETS_TABLE, null, cv);
+        return insert != -1;
+
+    }
+
     public boolean addOneSet(Set set) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -157,6 +170,36 @@ public class TabsDBHelper extends SQLiteOpenHelper {
         long insert = db.insert(SETS_TABLE, null, cv);
 
         return insert != -1;
+    }
+
+    public ArrayList<Integer> getAllSongsOfSet(int setID){
+
+        ArrayList<Integer> songsOfSet = new ArrayList<>();
+
+        String queryString = "SELECT " + COLUMN_SONG_ID + " FROM " + SONG_SETS_TABLE +
+                " WHERE " +
+                 COLUMN_SET_ID + " = " + setID;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()) {
+//            loop through the cursor (result set) and create new tab objects
+            do {
+
+                int tabID = cursor.getInt(0);
+
+                songsOfSet.add(tabID);
+
+            } while (cursor.moveToNext());
+
+        }
+
+        cursor.close();
+        db.close();
+        return songsOfSet;
+
     }
 
     public ArrayList<Set> getAllSets(){

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -195,13 +196,35 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
     }
 
     override fun onEditSetClicked(position: Int) {
-        TODO("Not yet implemented")
+
     }
 
-    override fun onItemSetClick(position: Int) {
-        TODO("Not yet implemented")
+    override fun onAddSongToSetClicked(position: Int) {
+
+        val songsOfSet = tabsDBHelper.getAllSongsOfSet(mySetsList[position].setID)
+
+        if (songsOfSet.size == 0){
+            Toast.makeText(this, "No songs for this set", Toast.LENGTH_SHORT).show()
+        }else{Toast.makeText(this, songsOfSet.joinToString("\n"), Toast.LENGTH_SHORT).show()}
+
+
+        Intent(this, AddSongsToSetActivity::class.java).also {
+
+            it.putExtra("EXTRA_SET_ID", mySetsList[position].setID)
+            it.putExtra("EXTRA_SET_NAME", mySetsList[position].setName)
+
+            startActivity(it)
+        }
     }
-}
+
+        override fun onItemSetClick(position: Int) {
+
+        }
+
+    }
+
+
+
 
 
 
