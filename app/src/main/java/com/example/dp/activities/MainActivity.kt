@@ -201,12 +201,6 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
 
     override fun onAddSongToSetClicked(position: Int) {
 
-        val songsOfSet = tabsDBHelper.getAllSongsOfSet(mySetsList[position].setID)
-
-        if (songsOfSet.size == 0){
-            Toast.makeText(this, "No songs for this set", Toast.LENGTH_SHORT).show()
-        }else{Toast.makeText(this, songsOfSet.joinToString("\n"), Toast.LENGTH_SHORT).show()}
-
 
         Intent(this, AddSongsToSetActivity::class.java).also {
 
@@ -218,6 +212,13 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
     }
 
         override fun onItemSetClick(position: Int) {
+
+            Intent(this, ActivityTest::class.java).also {
+
+                it.putExtra("EXTRA_SET_ID", mySetsList[position].setID)
+
+                startActivity(it)
+            }
 
         }
 

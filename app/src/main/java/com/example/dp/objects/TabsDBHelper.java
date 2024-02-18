@@ -202,6 +202,54 @@ public class TabsDBHelper extends SQLiteOpenHelper {
 
     }
 
+    public ArrayList<Song> getAllSongsForSet(int setID){
+
+        ArrayList<Song> songsOfSet = new ArrayList<>();
+
+        String queryString = "SELECT t.* " +
+                "FROM " + TAB_TABLE + " t " +
+                "INNER JOIN " + SONG_SETS_TABLE + " ss ON t." + COLUMN_SONG_ID + " = ss." + COLUMN_SONG_ID + " " +
+                "WHERE ss." + COLUMN_SET_ID + " = " + setID;
+
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()) {
+//            loop through the cursor (result set) and create new tab objects
+            do {
+
+                int tabID = cursor.getInt(0);
+                String songName = cursor.getString(1);
+                String artist = cursor.getString(2);
+                String songBody = cursor.getString(3);
+                String capo = cursor.getString(4);
+                String tuning = cursor.getString(5);
+                String key = cursor.getString(6);
+                String songChords = cursor.getString(7);
+                int minutes = cursor.getInt(8);
+                int seconds = cursor.getInt(9);
+
+
+                String[] songChordsSplit = songChords.split(" ");
+
+                ArrayList<String> songChordsList = new ArrayList<>(
+                        Arrays.asList(songChordsSplit)
+                );
+
+                Song savedTab = new Song(tabID, songName, artist, songBody, capo, tuning, key, songChordsList, minutes, seconds);
+                songsOfSet.add(savedTab);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return songsOfSet;
+
+    }
+
     public ArrayList<Set> getAllSets(){
 
         ArrayList<Set> setsList = new ArrayList<>();

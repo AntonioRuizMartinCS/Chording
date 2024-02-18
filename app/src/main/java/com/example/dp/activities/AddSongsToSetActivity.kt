@@ -1,5 +1,6 @@
 package com.example.dp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.ListView
@@ -46,7 +47,20 @@ class AddSongsToSetActivity : AppCompatActivity() {
 
         binding.setTittle.text = set.setName
 
+        val songsAlreadyOnSet = dbHelper.getAllSongsOfSet(set.setID)
+
         tabsList = dbHelper.allTabs
+
+        val iterator = tabsList.iterator()
+        while (iterator.hasNext()) {
+            val tab = iterator.next()
+            for (songAlreadyOnSet in songsAlreadyOnSet) {
+                if (tab.id == songAlreadyOnSet) {
+                    iterator.remove()
+                    break // Exit inner loop after removal to avoid unnecessary iterations
+                }
+            }
+        }
 
         val tabsListName = arrayListOf<String>()
 
@@ -87,7 +101,13 @@ class AddSongsToSetActivity : AppCompatActivity() {
              for (selectedSong in selectedSongs){
                  dbHelper.addSongToSet(selectedSong, set)
              }
+
+         Intent(this, MainActivity::class.java).also {
+             startActivity(it)
+         }
     }
+
+
 
 
 }
