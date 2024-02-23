@@ -1,11 +1,16 @@
 package com.example.dp.activities
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Paint
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dp.objects.Song
 import com.example.dp.databinding.ActivityTabBinding
+import com.example.dp.objects.ChordsFinder
 
 
 class TabActivity : AppCompatActivity() {
@@ -14,6 +19,7 @@ class TabActivity : AppCompatActivity() {
     private lateinit var tab: Song
     private var paint = Paint()
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTabBinding.inflate(layoutInflater)
@@ -35,9 +41,8 @@ class TabActivity : AppCompatActivity() {
 
         )
 
-
         createTabViews()
-        buildTabBody(36)
+        buildTabBody(20)
 
 
     }
@@ -53,66 +58,134 @@ class TabActivity : AppCompatActivity() {
         binding.tabCapo.text = "Capo: ${tab.capo}"
         binding.tabDuration.text = "Duration: ${tab.minutes}:${tab.seconds}"
         binding.tabChords.text = tab.songChords.joinToString(" ")
-
-
     }
+
 
     private fun buildTabBody(textSize: Int){
 
 
+        //flag for skipping iteration
+        var skipNextIteration = false
+
+        //final array of sorted lines
         val finalArray = arrayListOf<String>()
+
+        //initial array of unsorted lines
         val songLines:List<String> = tab.songBody.split("\n")
 
         //gets the width of layout after its been set
         binding.tabViewLinearLayout.post {
 
-            val layoutWidth = binding.tabBody.measuredWidth
+            //width of layout
+            val layoutWidth = binding.tabViewLinearLayout.measuredWidth
 
-            //count of characters
-            val characterCapacity = layoutWidth/textSize.toInt()
+            //count of characters that fit in line
+            val characterCapacity = layoutWidth/textSize
 
+            //looping through each line
             for(i in songLines.indices){
 
-                //number characters in line
-                val songLineWidth = songLines[i].length
-
-                //check if line is wider than screen
-                if (songLineWidth<=characterCapacity){
-
-                    if (songLines[i] == ""){
-                        finalArray.add(songLines[i])
-
-                    }
-
-                    if(!finalArray.contains(songLines[i])){
-
-                        finalArray.add(songLines[i])
-                    }
-
-
-                    //if it is:
-                }else{
-
-                    var endIndex = 0
-
-                    for(j in characterCapacity downTo 1){
-                        if (songLines[i][j-1] == ' '){
-
-                            endIndex = j
-                            break
-                        }
-                    }
-
-                    //adding the substring that fits in screen without cutting words
-                    finalArray.add(songLines[i].substring(0, endIndex))
-                    finalArray.add(songLines[i+1])
-                    finalArray.add(songLines[i].substring(endIndex, songLines[i].length))
+                if (skipNextIteration){
+                    skipNextIteration = false
+                    continue
                 }
 
+                //current line
+                val currentLine = songLines[i]
+
+                //number characters in current line
+                val songLineWidth = currentLine.length
+
+                //check if line is wider than screen
+                if (doesLineFit(characterCapacity, songLineWidth)){
+
+                    //if fits add to final array
+                        finalArray.add(songLines[i])
+
+                    //if doesn't fit:
+                }else{
+                    //check if current and next lines are chords
+                    val chordFinder = ChordsFinder()
+                    val currentLineIsChords = chordFinder.isItAChordsLine(currentLine)
+                    val nextLineIsChords = chordFinder.isItAChordsLine(songLines[i+1])
+
+                    //check for different scenarios
+
+                    //if current line is chords and next line is empty
+                    if (currentLineIsChords && songLines[i+1].isBlank()){
+                        val breakInLine =  findSpaceBeforeEnd(characterCapacity,currentLine)
+
+                        finalArray.add(currentLine.substring(0, breakInLine))
+                        finalArray.add(currentLine.substring(breakInLine,currentLine.length))
+
+                    }
+
+                    //if current line is lyrics
+                    if (!currentLineIsChords){
+                        val breakInLine =  findSpaceBeforeEnd(characterCapacity,currentLine)
+
+                        finalArray.add(currentLine.substring(0, breakInLine))
+                        finalArray.add(currentLine.substring(breakInLine,currentLine.length))
+
+                    }
+
+                    //if current line is chords and next line is lyrics
+                    if (currentLineIsChords && !nextLineIsChords){
+
+                        //if lyrics line fits
+                        if (doesLineFit(characterCapacity, songLines[i+1].length)){
+
+                            val breakInLine =  findSpaceBeforeEnd(characterCapacity,currentLine)
+
+                            finalArray.add(currentLine.substring(0, breakInLine))
+                            finalArray.add(songLines[i+1])
+                            finalArray.add(currentLine.substring(breakInLine,currentLine.length))
+
+
+                            //if lyrics line doesn't fit
+                        }else{
+
+                            finalArray.add(currentLine.substring(0, findSpaceBeforeEnd(characterCapacity, currentLine)))
+                            finalArray.add(songLines[i+1].substring(0, findSpaceBeforeEnd(characterCapacity, songLines[i+1])))
+                            finalArray.add(currentLine.substring(findSpaceBeforeEnd(characterCapacity, currentLine), currentLine.length))
+                            finalArray.add(songLines[i+1].substring(findSpaceBeforeEnd(characterCapacity, songLines[i+1]), songLines[i+1].length))
+
+                        }
+
+                        skipNextIteration = true
+                        continue
+
+
+                    }
+                }
             }
 
             binding.tabBody.text = finalArray.joinToString("\n")
         }
     }
+
+            private fun findSpaceBeforeEnd(characterCapacity: Int, lyricLine: String): Int {
+
+                var breakInLyrics = 0
+                //find a space to break at
+                for (j in characterCapacity downTo 1) {
+                    if (lyricLine[j - 1] == ' ') {
+                        breakInLyrics = j
+                        break
+                    }
+                }
+                return breakInLyrics
+            }
+
+    private fun doesLineFit(characterCapacity: Int, songLineWith: Int):Boolean{
+
+        if (songLineWith<= characterCapacity){
+            return true
+        }
+        return false
+
+    }
+
+
 }
 

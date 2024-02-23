@@ -113,6 +113,7 @@ class ChordsFinder {
      return false
     }
 
+
     fun isItDescriptionLine(songLine: String):Boolean{
 
         for(lineDescription in lineDescriptions){
