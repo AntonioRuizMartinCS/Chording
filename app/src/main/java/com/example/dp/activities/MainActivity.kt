@@ -213,7 +213,7 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
 
         override fun onItemSetClick(position: Int) {
 
-            Intent(this, ActivityTest::class.java).also {
+            Intent(this, SetActivity::class.java).also {
 
                 it.putExtra("EXTRA_SET_ID", mySetsList[position].setID)
 

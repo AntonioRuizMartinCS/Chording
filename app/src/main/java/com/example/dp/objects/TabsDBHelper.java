@@ -97,15 +97,13 @@ public class TabsDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         String queryString = "DELETE FROM " + TAB_TABLE + " WHERE " + COLUMN_SONG_ID + " = " + song.getId();
+        String deleteJunctionRowStatement = "DELETE FROM " + SONG_SETS_TABLE + " WHERE " + COLUMN_SONG_ID + " = " + song.getId();
 
-        Cursor cursor = db.rawQuery(queryString, null);
+        db.execSQL(queryString);
 
-        if (cursor.moveToFirst()) {
+        db.execSQL(deleteJunctionRowStatement);
 
-            return true;
-        } else {
             return false;
-        }
 
     }
 
@@ -113,17 +111,31 @@ public class TabsDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         String queryString = "DELETE FROM " + SETS_TABLE + " WHERE " + COLUMN_SET_ID + " = " + set.getSetID();
+        String deleteJunctionRowStatement = "DELETE FROM " + SONG_SETS_TABLE + " WHERE " + COLUMN_SET_ID + " = " + set.getSetID();
 
-        Cursor cursor = db.rawQuery(queryString, null);
 
-        if (cursor.moveToFirst()) {
+        db.execSQL(queryString);
 
-            return true;
-        } else {
+        db.execSQL(deleteJunctionRowStatement);
+
             return false;
-        }
 
     }
+
+    public boolean deleteRelationship(Song song) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String queryString = "DELETE FROM " + SONG_SETS_TABLE + " WHERE " + COLUMN_SONG_ID + " = " + song.getId();
+
+
+        db.execSQL(queryString);
+
+
+        return false;
+
+    }
+
+
 
 
     public boolean addOneSong(Song song) {

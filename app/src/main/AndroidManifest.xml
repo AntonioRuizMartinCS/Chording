@@ -20,6 +20,9 @@
         android:theme="@style/Theme.DP"
         tools:targetApi="31">
         <activity
+            android:name=".activities.SetActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.AddSongsToSetActivity"
             android:exported="false" />
         <activity

@@ -28,6 +28,7 @@
     <string name="add_set">add set</string>
     <string name="add_song">Add song</string>
     <string name="add_to_set">Add to set</string>
+    <string name="remove_from_set">remove from set</string>
 
 
     <string-array name="capo">

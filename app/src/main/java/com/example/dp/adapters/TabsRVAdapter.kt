@@ -1,5 +1,6 @@
 package com.example.dp.adapters
 
+import android.content.Context
 import android.view.*
 import android.view.View.OnClickListener
 import android.widget.ImageView
@@ -7,6 +8,8 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dp.R
+import com.example.dp.activities.MainActivity
+import com.example.dp.activities.SetActivity
 import com.example.dp.models.TabsViewModel
 
 class TabsRVAdapter(
@@ -36,7 +39,7 @@ class TabsRVAdapter(
         holder.songName.text = tabsViewModel.songName
         holder.artistName.text = tabsViewModel.artistName
         holder.optionsButton.setImageResource(tabsViewModel.optionsButton)
-        holder.optionsButton.setOnClickListener { createPopUpMenu(holder.optionsButton, position)}
+        holder.optionsButton.setOnClickListener { createPopUpMenu(holder.optionsButton, position, holder.itemView.context)}
 
 
 
@@ -79,12 +82,19 @@ class TabsRVAdapter(
         fun onEditClicked(position: Int)
     }
 
-    private fun createPopUpMenu(view:View, position: Int){
+    private fun createPopUpMenu(view:View, position: Int, context:Context){
 
         val popupMenu = PopupMenu(view.context, view)
-        popupMenu.menuInflater.inflate(R.menu.tab_context_menu, popupMenu.menu)
+
+        when(context){
+            is MainActivity -> popupMenu.menuInflater.inflate(R.menu.tab_context_menu, popupMenu.menu)
+
+            is SetActivity -> popupMenu.menuInflater.inflate(R.menu.song_in_set_context_menu, popupMenu.menu)
+
+        }
 
         popupMenu.setOnMenuItemClickListener { item ->
+
             when(item.itemId){
 
                 R.id.cmDelete -> menuItemClickListener.onDeleteClicked(position)
