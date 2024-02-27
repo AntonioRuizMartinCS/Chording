@@ -216,6 +216,7 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
             Intent(this, SetActivity::class.java).also {
 
                 it.putExtra("EXTRA_SET_ID", mySetsList[position].setID)
+                it.putExtra("EXTRA_SET_NAME", mySetsList[position].setName)
 
                 startActivity(it)
             }

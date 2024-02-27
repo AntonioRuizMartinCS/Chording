@@ -122,10 +122,10 @@ public class TabsDBHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean deleteRelationship(Song song) {
+    public boolean deleteRelationship(int songID) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-        String queryString = "DELETE FROM " + SONG_SETS_TABLE + " WHERE " + COLUMN_SONG_ID + " = " + song.getId();
+        String queryString = "DELETE FROM " + SONG_SETS_TABLE + " WHERE " + COLUMN_SONG_ID + " = " + songID;
 
 
         db.execSQL(queryString);

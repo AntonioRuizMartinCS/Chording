@@ -87,10 +87,9 @@ class TabsRVAdapter(
         val popupMenu = PopupMenu(view.context, view)
 
         when(context){
-            is MainActivity -> popupMenu.menuInflater.inflate(R.menu.tab_context_menu, popupMenu.menu)
 
+            is MainActivity ->  popupMenu.menuInflater.inflate(R.menu.tab_context_menu, popupMenu.menu)
             is SetActivity -> popupMenu.menuInflater.inflate(R.menu.song_in_set_context_menu, popupMenu.menu)
-
         }
 
         popupMenu.setOnMenuItemClickListener { item ->
@@ -98,6 +97,8 @@ class TabsRVAdapter(
             when(item.itemId){
 
                 R.id.cmDelete -> menuItemClickListener.onDeleteClicked(position)
+
+                R.id.removeFromSet -> menuItemClickListener.onDeleteClicked(position)
 
                 R.id.cmEdit -> menuItemClickListener.onEditClicked(position)
 
