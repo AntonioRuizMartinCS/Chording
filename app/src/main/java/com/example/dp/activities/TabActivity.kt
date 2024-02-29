@@ -6,8 +6,12 @@ import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.dp.R
 import com.example.dp.objects.Song
 import com.example.dp.databinding.ActivityTabBinding
 import com.example.dp.objects.ChordsFinder
@@ -17,7 +21,8 @@ class TabActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTabBinding
     private lateinit var tab: Song
-    private var paint = Paint()
+    private var defaultTextSize = 20
+    private var actualFontSize = 12f
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +47,8 @@ class TabActivity : AppCompatActivity() {
         )
 
         createTabViews()
-        buildTabBody(20)
+        buildTabBody(defaultTextSize, actualFontSize)
+
 
 
     }
@@ -61,7 +67,8 @@ class TabActivity : AppCompatActivity() {
     }
 
 
-    private fun buildTabBody(textSize: Int){
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun buildTabBody(textSize: Int, actualFontSize:Float){
 
 
         //flag for skipping iteration
@@ -78,6 +85,8 @@ class TabActivity : AppCompatActivity() {
 
             //width of layout
             val layoutWidth = binding.tabViewLinearLayout.measuredWidth
+
+
 
             //count of characters that fit in line
             val characterCapacity = layoutWidth/textSize
@@ -160,8 +169,24 @@ class TabActivity : AppCompatActivity() {
                 }
             }
 
-            binding.tabBody.text = finalArray.joinToString("\n")
+            //create text view programmatically
+            val tabViewLinearLayout = binding.tabViewLinearLayout
+            val tabBodyTextView = TextView(this)
+            tabBodyTextView.id = View.generateViewId()
+            tabBodyTextView.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            tabBodyTextView.setPadding(0, 0, 0, 40) // Add padding if needed
+            tabBodyTextView.text = finalArray.joinToString("\n")
+            tabBodyTextView.textSize = actualFontSize // Set text size
+            tabBodyTextView.typeface = resources.getFont(R.font.cousine) // Set font
+            tabBodyTextView.setTextColor(resources.getColor(android.R.color.black)) // Set text color
+
+            tabViewLinearLayout.addView(tabBodyTextView)
+
         }
+
     }
 
             private fun findSpaceBeforeEnd(characterCapacity: Int, lyricLine: String): Int {
@@ -177,14 +202,14 @@ class TabActivity : AppCompatActivity() {
                 return breakInLyrics
             }
 
-    private fun doesLineFit(characterCapacity: Int, songLineWith: Int):Boolean{
+            private fun doesLineFit(characterCapacity: Int, songLineWith: Int):Boolean{
 
-        if (songLineWith<= characterCapacity){
-            return true
-        }
-        return false
+                if (songLineWith<= characterCapacity){
+                    return true
+                }
+                return false
 
-    }
+            }
 
 
 }
