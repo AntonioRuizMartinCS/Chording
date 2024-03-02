@@ -20,7 +20,7 @@ class TabActivity : AppCompatActivity() {
     private lateinit var tab: Song
     private var defaultFontSize = 12f
     private var newFontSize = defaultFontSize
-    private var defaultTextMeasure = (defaultFontSize * 1.6666).toInt()
+    private var defaultTextMeasure = (defaultFontSize * 1.8).toInt()
     private lateinit var tabBodyTextView:TextView
     private var tabViewLinearLayout:LinearLayout? = null
 
@@ -96,7 +96,7 @@ class TabActivity : AppCompatActivity() {
             newFontSize += 1f
         }
 
-        val newTextMeasure = (newFontSize*1.6666).toInt()
+        val newTextMeasure = (newFontSize*1.8).toInt()
 
         tabViewLinearLayout?.removeView(tabBodyTextView)
         buildTabBody(newTextMeasure, newFontSize)
@@ -110,7 +110,7 @@ class TabActivity : AppCompatActivity() {
             newFontSize -= 1f
         }
 
-        val newTextMeasure = (newFontSize*1.66666).toInt()
+        val newTextMeasure = (newFontSize*1.8).toInt()
 
         tabViewLinearLayout?.removeView(tabBodyTextView)
         buildTabBody(newTextMeasure, newFontSize)
