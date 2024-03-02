@@ -1,11 +1,8 @@
 package com.example.dp.activities
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -21,8 +18,11 @@ class TabActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTabBinding
     private lateinit var tab: Song
-    private var defaultTextSize = 20
-    private var actualFontSize = 12f
+    private var defaultFontSize = 12f
+    private var newFontSize = defaultFontSize
+    private var defaultTextMeasure = (defaultFontSize * 1.6666).toInt()
+    private lateinit var tabBodyTextView:TextView
+    private var tabViewLinearLayout:LinearLayout? = null
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,15 +47,20 @@ class TabActivity : AppCompatActivity() {
         )
 
         createTabViews()
-        buildTabBody(defaultTextSize, actualFontSize)
+        buildTabBody(defaultTextMeasure, defaultFontSize)
 
 
 
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
     private fun createTabViews(){
+
+        val zoomBtn = binding.zoomBtn
+        val zoomInBtn = binding.zoomIn
+        val zoomOutBtn = binding.zoomOut
 
         binding.tabName.text = tab.songName
         binding.tabArtist.text = tab.artist
@@ -64,11 +69,59 @@ class TabActivity : AppCompatActivity() {
         binding.tabCapo.text = "Capo: ${tab.capo}"
         binding.tabDuration.text = "Duration: ${tab.minutes}:${tab.seconds}"
         binding.tabChords.text = tab.songChords.joinToString(" ")
+
+        zoomBtn.setOnClickListener {
+            zoomBtn.visibility = View.INVISIBLE
+            zoomInBtn.visibility = View.VISIBLE
+            zoomOutBtn.visibility = View.VISIBLE
+        }
+
+        zoomInBtn.setOnClickListener {
+            zoomIn()
+
+        }
+
+        zoomOutBtn.setOnClickListener {
+            zoomOut()
+
+        }
+
     }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun buildTabBody(textSize: Int, actualFontSize:Float){
+    private fun zoomIn(){
+
+        if (newFontSize<=24f){
+            newFontSize += 1f
+        }
+
+        val newTextMeasure = (newFontSize*1.6666).toInt()
+
+        tabViewLinearLayout?.removeView(tabBodyTextView)
+        buildTabBody(newTextMeasure, newFontSize)
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun zoomOut(){
+
+        if (newFontSize>=8f){
+            newFontSize -= 1f
+        }
+
+        val newTextMeasure = (newFontSize*1.66666).toInt()
+
+        tabViewLinearLayout?.removeView(tabBodyTextView)
+        buildTabBody(newTextMeasure, newFontSize)
+
+    }
+
+
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun buildTabBody(textSize: Int, fontSize:Float){
 
 
         //flag for skipping iteration
@@ -169,9 +222,10 @@ class TabActivity : AppCompatActivity() {
                 }
             }
 
+
             //create text view programmatically
-            val tabViewLinearLayout = binding.tabViewLinearLayout
-            val tabBodyTextView = TextView(this)
+            tabViewLinearLayout = binding.tabViewLinearLayout
+            tabBodyTextView = TextView(this)
             tabBodyTextView.id = View.generateViewId()
             tabBodyTextView.layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -179,11 +233,11 @@ class TabActivity : AppCompatActivity() {
             )
             tabBodyTextView.setPadding(0, 0, 0, 40) // Add padding if needed
             tabBodyTextView.text = finalArray.joinToString("\n")
-            tabBodyTextView.textSize = actualFontSize // Set text size
+            tabBodyTextView.textSize = fontSize // Set text size
             tabBodyTextView.typeface = resources.getFont(R.font.cousine) // Set font
             tabBodyTextView.setTextColor(resources.getColor(android.R.color.black)) // Set text color
 
-            tabViewLinearLayout.addView(tabBodyTextView)
+            tabViewLinearLayout?.addView(tabBodyTextView)
 
         }
 
