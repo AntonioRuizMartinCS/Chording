@@ -30,6 +30,7 @@
     <string name="add_to_set">Add to set</string>
     <string name="remove_from_set">remove from set</string>
     <string name="zoom_in_and_out_button">zoom in and out button</string>
+    <string name="automatic_scroll_button">automatic scroll button</string>
 
 
     <string-array name="capo">

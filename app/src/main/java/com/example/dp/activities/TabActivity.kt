@@ -1,23 +1,27 @@
 package com.example.dp.activities
 
+
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.os.Handler
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
+import android.view.animation.LinearInterpolator
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dp.R
-import com.example.dp.objects.Song
 import com.example.dp.databinding.ActivityTabBinding
 import com.example.dp.objects.ChordsFinder
+import com.example.dp.objects.Song
 
 
 class TabActivity : AppCompatActivity() {
@@ -68,6 +72,7 @@ class TabActivity : AppCompatActivity() {
         val zoomBtn = binding.zoomBtn
         val zoomInBtn = binding.zoomIn
         val zoomOutBtn = binding.zoomOut
+        val tabScreen = binding.tabScreenScrollView
 
         binding.tabName.text = tab.songName
         binding.tabArtist.text = tab.artist
@@ -92,8 +97,53 @@ class TabActivity : AppCompatActivity() {
             zoomOut()
 
         }
+        binding.tabViewLinearLayout.setOnClickListener {
+            if (zoomBtn.visibility == View.INVISIBLE){
+                zoomBtn.visibility = View.VISIBLE
+                zoomInBtn.visibility = View.INVISIBLE
+                zoomOutBtn.visibility = View.INVISIBLE
+            }
+
+        }
+
+        binding.automaticScrollBtn.setOnClickListener {
+            triggerAS()
+        }
+
+
+
+
 
     }
+
+
+//    https://stackoverflow.com/questions/13952357/infinite-auto-scroll-listview-with-scroll-speed-controlled
+    private fun triggerAS() {
+
+        val totalScrollTime = Long.MAX_VALUE
+
+        val scrollPeriod =25
+
+        val heightToScroll =1
+        val scrollView = findViewById<ScrollView>(R.id.tabScreenScrollView)
+
+        scrollView.post {
+
+                object : CountDownTimer(totalScrollTime, scrollPeriod.toLong()) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        scrollView.scrollBy(0, heightToScroll)
+                    }
+
+                    override fun onFinish() {
+                        // Add code for restarting timer here if needed
+
+
+                    }
+                }.start()
+
+        }
+    }
+
 
 
     @RequiresApi(Build.VERSION_CODES.O)

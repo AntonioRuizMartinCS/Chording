@@ -100,17 +100,14 @@ class ChordsFinder {
         return chords
     }
 
-    fun isItAChordsLine(songLine:String):Boolean{
-
-        for(musicChord in musicChords){
-
-            if(songLine.contains(" $musicChord ") || songLine.contains(musicChord) || songLine.contains("$musicChord ") || songLine.contains(" $musicChord") ){
-
+    fun isItAChordsLine(songLine: String): Boolean {
+        for (musicChord in musicChords) {
+            val regex = Regex("\\b${Regex.escape(musicChord)}\\b", RegexOption.IGNORE_CASE)
+            if (regex.find(songLine) != null) {
                 return true
             }
-
         }
-     return false
+        return false
     }
 
 
