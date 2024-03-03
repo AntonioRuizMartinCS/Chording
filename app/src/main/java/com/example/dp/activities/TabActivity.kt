@@ -1,8 +1,14 @@
 package com.example.dp.activities
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -23,6 +29,7 @@ class TabActivity : AppCompatActivity() {
     private var defaultTextMeasure = (defaultFontSize * 1.8).toInt()
     private lateinit var tabBodyTextView:TextView
     private var tabViewLinearLayout:LinearLayout? = null
+    private val chordFinder = ChordsFinder()
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -124,11 +131,12 @@ class TabActivity : AppCompatActivity() {
     private fun buildTabBody(textSize: Int, fontSize:Float){
 
 
+        val finalTabBody = SpannableStringBuilder()
+
+
+
         //flag for skipping iteration
         var skipNextIteration = false
-
-        //final array of sorted lines
-        val finalArray = arrayListOf<String>()
 
         //initial array of unsorted lines
         val songLines:List<String> = tab.songBody.split("\n")
@@ -138,8 +146,6 @@ class TabActivity : AppCompatActivity() {
 
             //width of layout
             val layoutWidth = binding.tabViewLinearLayout.measuredWidth
-
-
 
             //count of characters that fit in line
             val characterCapacity = layoutWidth/textSize
@@ -162,12 +168,21 @@ class TabActivity : AppCompatActivity() {
                 if (doesLineFit(characterCapacity, songLineWidth)){
 
                     //if fits add to final array
-                        finalArray.add(songLines[i])
+                        finalTabBody.append(songLines[i] + "\n")
+
+                    //set style if its chords line
+                    if (chordFinder.isItAChordsLine(songLines[i])){
+                        val boldSpan = StyleSpan(Typeface.BOLD)
+
+                        finalTabBody.setSpan(boldSpan, finalTabBody.length - songLines[i].length - 1 , finalTabBody.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+                    }
+
+
 
                     //if doesn't fit:
                 }else{
                     //check if current and next lines are chords
-                    val chordFinder = ChordsFinder()
+
                     val currentLineIsChords = chordFinder.isItAChordsLine(currentLine)
                     val nextLineIsChords = chordFinder.isItAChordsLine(songLines[i+1])
 
@@ -177,8 +192,14 @@ class TabActivity : AppCompatActivity() {
                     if (currentLineIsChords && songLines[i+1].isBlank()){
                         val breakInLine =  findSpaceBeforeEnd(characterCapacity,currentLine)
 
-                        finalArray.add(currentLine.substring(0, breakInLine))
-                        finalArray.add(currentLine.substring(breakInLine,currentLine.length))
+                        finalTabBody.append((currentLine.substring(0, breakInLine))+ "\n")
+                        finalTabBody.append((currentLine.substring(breakInLine,currentLine.length))+ "\n")
+
+                        val boldSpan = StyleSpan(Typeface.BOLD)
+
+                        finalTabBody.setSpan(boldSpan, finalTabBody.length - currentLine.length - 1 , finalTabBody.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+
+
 
                     }
 
@@ -186,8 +207,8 @@ class TabActivity : AppCompatActivity() {
                     if (!currentLineIsChords){
                         val breakInLine =  findSpaceBeforeEnd(characterCapacity,currentLine)
 
-                        finalArray.add(currentLine.substring(0, breakInLine))
-                        finalArray.add(currentLine.substring(breakInLine,currentLine.length))
+                        finalTabBody.append((currentLine.substring(0, breakInLine))+ "\n")
+                        finalTabBody.append((currentLine.substring(breakInLine,currentLine.length))+ "\n")
 
                     }
 
@@ -199,18 +220,18 @@ class TabActivity : AppCompatActivity() {
 
                             val breakInLine =  findSpaceBeforeEnd(characterCapacity,currentLine)
 
-                            finalArray.add(currentLine.substring(0, breakInLine))
-                            finalArray.add(songLines[i+1])
-                            finalArray.add(currentLine.substring(breakInLine,currentLine.length))
+                            finalTabBody.append((currentLine.substring(0, breakInLine))+ "\n")
+                            finalTabBody.append(songLines[i+1] + "\n")
+                            finalTabBody.append((currentLine.substring(breakInLine,currentLine.length))+ "\n")
 
 
                             //if lyrics line doesn't fit
                         }else{
 
-                            finalArray.add(currentLine.substring(0, findSpaceBeforeEnd(characterCapacity, currentLine)))
-                            finalArray.add(songLines[i+1].substring(0, findSpaceBeforeEnd(characterCapacity, songLines[i+1])))
-                            finalArray.add(currentLine.substring(findSpaceBeforeEnd(characterCapacity, currentLine), currentLine.length))
-                            finalArray.add(songLines[i+1].substring(findSpaceBeforeEnd(characterCapacity, songLines[i+1]), songLines[i+1].length))
+                            finalTabBody.append((currentLine.substring(0, findSpaceBeforeEnd(characterCapacity, currentLine)))+ "\n")
+                            finalTabBody.append((songLines[i+1].substring(0, findSpaceBeforeEnd(characterCapacity, songLines[i+1])))+ "\n")
+                            finalTabBody.append((currentLine.substring(findSpaceBeforeEnd(characterCapacity, currentLine), currentLine.length))+ "\n")
+                            finalTabBody.append((songLines[i+1].substring(findSpaceBeforeEnd(characterCapacity, songLines[i+1]), songLines[i+1].length))+ "\n")
 
                         }
 
@@ -232,7 +253,7 @@ class TabActivity : AppCompatActivity() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             tabBodyTextView.setPadding(0, 0, 0, 40) // Add padding if needed
-            tabBodyTextView.text = finalArray.joinToString("\n")
+            tabBodyTextView.text = finalTabBody
             tabBodyTextView.textSize = fontSize // Set text size
             tabBodyTextView.typeface = resources.getFont(R.font.cousine) // Set font
             tabBodyTextView.setTextColor(resources.getColor(android.R.color.black)) // Set text color

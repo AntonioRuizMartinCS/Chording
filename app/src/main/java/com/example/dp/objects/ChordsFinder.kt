@@ -104,7 +104,7 @@ class ChordsFinder {
 
         for(musicChord in musicChords){
 
-            if(songLine.contains(" $musicChord ")){
+            if(songLine.contains(" $musicChord ") || songLine.contains(musicChord) || songLine.contains("$musicChord ") || songLine.contains(" $musicChord") ){
 
                 return true
             }

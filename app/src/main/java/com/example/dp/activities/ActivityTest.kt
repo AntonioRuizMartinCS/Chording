@@ -1,9 +1,13 @@
 package com.example.dp.activities
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import com.example.dp.databinding.ActivityTestBinding
-import com.example.dp.objects.TabsDBHelper
 
 class ActivityTest : AppCompatActivity() {
 
@@ -15,10 +19,39 @@ class ActivityTest : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        val dbHelper = TabsDBHelper(this)
-        val setID = intent.getIntExtra("EXTRA_SET_ID", 0)
+        val spannableStringBuilder = SpannableStringBuilder()
 
-        binding.testReadFile.text = dbHelper.getAllSongsForSet(setID).joinToString("\n")
+        val stringArrayList = listOf(
+            "This line contains the letter 'a'.",
+            "Here is another line without the letter 'a'.",
+            "Yet another line with the letter 'a' in it.",
+            "This line does not have any 'a's in it.",
+            "A line with a few 'a's scattered within.",
+            "No 'a's here.",
+            "One more line, not containing 'a'."
+        )
 
+
+
+        for (i in stringArrayList.indices){
+            val currentLine = stringArrayList[i]
+            val start = spannableStringBuilder.length
+            spannableStringBuilder.append(currentLine)
+            val end = spannableStringBuilder.length
+            if (currentLine.contains('a')){
+                val styleSpan = ForegroundColorSpan(Color.GREEN)
+                spannableStringBuilder.setSpan(
+                    styleSpan,
+                    start,
+                    end,
+                    Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                )
+            }
+            if (i != stringArrayList.lastIndex) {
+                spannableStringBuilder.append("\n") // Append newline to separate lines
+            }
+        }
+
+        binding.testReadFile.text = spannableStringBuilder
     }
 }
