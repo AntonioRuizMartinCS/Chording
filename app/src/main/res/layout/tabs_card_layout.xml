@@ -4,9 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="40dp"
     android:layout_margin="1dp"
-    app:cardElevation="6dp">
+    app:cardElevation="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -35,8 +35,7 @@
                 android:layout_marginStart="10dp"
                 android:gravity="center"
                 android:text="@string/item"
-                android:textSize="20sp"
-                android:textStyle="bold"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.02"
@@ -49,8 +48,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/slash"
-                android:textSize="20sp"
-                android:textStyle="bold"
+                android:textSize="18sp"
                 android:layout_marginStart="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -65,8 +63,7 @@
                 android:gravity="center"
                 android:text="@string/item"
                 android:layout_marginStart="10dp"
-                android:textSize="20sp"
-                android:textStyle="bold"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.4"

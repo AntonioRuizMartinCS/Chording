@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.95"
-        android:contentDescription="TODO" />
+        android:contentDescription="@string/todo" />
 
     <SearchView
         android:layout_width="match_parent"
@@ -42,6 +42,8 @@
         android:layout_height="30dp"
         android:ems="10"
         android:text="@string/my_tabs"
+        android:gravity="center"
+        android:background="@drawable/bottom_line_transition"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,6 +58,8 @@
         android:layout_height="30dp"
         android:ems="10"
         android:text="@string/my_sets"
+        android:background="@drawable/bottom_line_transition"
+        android:gravity="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

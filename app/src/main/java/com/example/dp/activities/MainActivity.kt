@@ -1,14 +1,19 @@
 package com.example.dp.activities
 
 
+import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.TransitionDrawable
+import android.media.MicrophoneInfo.Coordinate3F
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dp.*
@@ -27,6 +32,7 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
     private lateinit var tabsDBHelper: TabsDBHelper
     private lateinit var myTabsList:ArrayList<Song>
     private lateinit var mySetsList:ArrayList<com.example.dp.objects.Set>
+    private lateinit var animator: ObjectAnimator
 
 
 
@@ -37,14 +43,33 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
         val view = binding.root
         setContentView(view)
 
+        //launch test activity
+//        Intent(this, ActivityTest::class.java).also {
+//            startActivity(it)
+//        }
+
+
+
         tabsDBHelper = TabsDBHelper(this)
 
 //        tabsDBHelper.deleteTables()
         myTabsList = tabsDBHelper.allTabs
         mySetsList = tabsDBHelper.allSets
 
-        createButtons()
         createRecyclersView()
+        createButtons()
+        createTransition(binding.myTabsLabel)
+    }
+
+    private fun createTransition(view: TextView){
+
+        val transition = view.background as? TransitionDrawable
+        transition?.startTransition(500)
+    }
+
+    private fun resetTransition(view: TextView){
+        val transitionDrawable = ContextCompat.getDrawable(this, R.drawable.bottom_line_transition)
+        view.background = transitionDrawable
     }
 
     private fun createButtons(){
@@ -64,11 +89,21 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
             binding.setsRecyclerView.visibility = View.VISIBLE
             binding.tabsRecyclerView.visibility = View.INVISIBLE
             binding.addSetButton.visibility = View.VISIBLE
+            createTransition(setsBtn)
+            resetTransition(tabsBtn)
+
+
+
+
         }
         tabsBtn.setOnClickListener{
+
             binding.setsRecyclerView.visibility = View.INVISIBLE
             binding.tabsRecyclerView.visibility = View.VISIBLE
             binding.addSetButton.visibility = View.INVISIBLE
+            createTransition(tabsBtn)
+            resetTransition(setsBtn)
+
         }
 
         addSetBtn.setOnClickListener{
