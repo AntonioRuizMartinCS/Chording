@@ -3,7 +3,9 @@ package com.example.dp.activities
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -34,6 +36,7 @@ class TabActivity : AppCompatActivity() {
     private lateinit var tabBodyTextView:TextView
     private var tabViewLinearLayout:LinearLayout? = null
     private val chordFinder = ChordsFinder()
+    private var scrollTimer: CountDownTimer? = null
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +75,7 @@ class TabActivity : AppCompatActivity() {
         val zoomBtn = binding.zoomBtn
         val zoomInBtn = binding.zoomIn
         val zoomOutBtn = binding.zoomOut
-        val tabScreen = binding.tabScreenScrollView
+        val automaticScrollButton = binding.automaticScrollBtn
 
         binding.tabName.text = tab.songName
         binding.tabArtist.text = tab.artist
@@ -84,6 +87,7 @@ class TabActivity : AppCompatActivity() {
 
         zoomBtn.setOnClickListener {
             zoomBtn.visibility = View.INVISIBLE
+            automaticScrollButton.visibility = View.INVISIBLE
             zoomInBtn.visibility = View.VISIBLE
             zoomOutBtn.visibility = View.VISIBLE
         }
@@ -102,12 +106,31 @@ class TabActivity : AppCompatActivity() {
                 zoomBtn.visibility = View.VISIBLE
                 zoomInBtn.visibility = View.INVISIBLE
                 zoomOutBtn.visibility = View.INVISIBLE
+                automaticScrollButton.visibility = View.VISIBLE
             }
+
 
         }
 
-        binding.automaticScrollBtn.setOnClickListener {
-            triggerAS()
+
+        //toggle automatic scroll with button
+
+        var toggle = true
+        automaticScrollButton.setOnClickListener {
+
+            if (toggle){
+
+                automaticScrollButton.background = ColorDrawable(Color.MAGENTA)
+                triggerAS()
+
+            }else{
+
+                automaticScrollButton.setBackgroundResource(R.drawable.zoom_in_out)
+                stopAS()
+
+            }
+            toggle = !toggle
+
         }
 
 
@@ -120,28 +143,47 @@ class TabActivity : AppCompatActivity() {
 //    https://stackoverflow.com/questions/13952357/infinite-auto-scroll-listview-with-scroll-speed-controlled
     private fun triggerAS() {
 
-        val totalScrollTime = Long.MAX_VALUE
 
-        val scrollPeriod =25
+    stopAS()
 
-        val heightToScroll =1
-        val scrollView = findViewById<ScrollView>(R.id.tabScreenScrollView)
+    //get the duration of the song in milliseconds
+    val songTime = (tab.minutes * 60000) + (tab.seconds * 1000)
 
+    val scrollView = findViewById<ScrollView>(R.id.tabScreenScrollView)
+
+
+        //once the scroll view has been set
         scrollView.post {
+            //pixels that each scroll moves
+            val heightToScroll = 2
+            //height of the tab
+            val viewHeight = tabBodyTextView.measuredHeight
+            //accounting for the space above the tab view to have some margin
+            val marginSpace = tabViewLinearLayout?.measuredHeight?.minus(tabBodyTextView.measuredHeight)
+            //formula for how often should the intervals be
+            val scrollPeriod = songTime/((viewHeight- marginSpace!!)/heightToScroll)
 
-                object : CountDownTimer(totalScrollTime, scrollPeriod.toLong()) {
+            scrollTimer = object : CountDownTimer(songTime.toLong(), scrollPeriod.toLong()) {
+
+                    @SuppressLint("SetTextI18n")
                     override fun onTick(millisUntilFinished: Long) {
                         scrollView.scrollBy(0, heightToScroll)
+                        binding.countdown.text = "seconds remaining: " + millisUntilFinished / 1000
                     }
 
                     override fun onFinish() {
                         // Add code for restarting timer here if needed
 
-
                     }
                 }.start()
 
         }
+    }
+
+    private fun stopAS() {
+        // Check if there's an ongoing scrolling and cancel it
+        scrollTimer?.cancel()
+        scrollTimer = null
     }
 
 

@@ -10,9 +10,9 @@
         android:id="@+id/tabScreenScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:paddingBottom="25dp"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,11 +20,11 @@
 
         <LinearLayout
             android:id="@+id/tabViewLinearLayout"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
             android:orientation="vertical">
 
 
@@ -143,67 +143,68 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-
         </LinearLayout>
 
     </ScrollView>
 
     <ImageView
         android:id="@+id/zoomBtn"
-        android:visibility="visible"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/zoom_in_out"
+        android:contentDescription="@string/zoom_in_and_out_button"
+        android:foreground="?android:attr/selectableItemBackground"
         android:src="@drawable/baseline_zoom_in_24"
         android:translationZ="90dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:contentDescription="@string/zoom_in_and_out_button" />
+        app:layout_constraintVertical_bias="0.75" />
 
     <ImageView
         android:id="@+id/zoomIn"
-        android:visibility="invisible"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/zoom_in_out"
+        android:contentDescription="@string/zoom_in_and_out_button"
+        android:foreground="?android:attr/selectableItemBackground"
         android:src="@drawable/baseline_zoom_in_24"
         android:translationZ="90dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:contentDescription="@string/zoom_in_and_out_button" />
+        app:layout_constraintVertical_bias="0.65" />
 
     <ImageView
         android:id="@+id/zoomOut"
-        android:visibility="invisible"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/zoom_in_out"
+        android:contentDescription="@string/zoom_in_and_out_button"
+        android:foreground="?android:attr/selectableItemBackground"
         android:src="@drawable/baseline_zoom_out_24"
         android:translationZ="90dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.80"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:contentDescription="@string/zoom_in_and_out_button" />
+        app:layout_constraintVertical_bias="0.75" />
 
     <ImageView
         android:id="@+id/automaticScrollBtn"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/zoom_in_out"
+        android:contentDescription="@string/automatic_scroll_button"
+        android:foreground="?android:attr/selectableItemBackground"
         android:src="@drawable/baseline_keyboard_double_arrow_down_24"
         android:translationZ="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -211,9 +212,18 @@
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.85"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:contentDescription="@string/automatic_scroll_button" />
+        app:layout_constraintVertical_bias="0.85" />
 
+
+    <TextView
+        android:id="@+id/countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.90" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
