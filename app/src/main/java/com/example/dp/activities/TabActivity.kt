@@ -1,29 +1,30 @@
 package com.example.dp.activities
 
 
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
-import android.graphics.Color
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.graphics.Typeface
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Handler
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
+import android.view.LayoutInflater
 import android.view.View
-import android.view.animation.LinearInterpolator
 import android.widget.LinearLayout
+import android.widget.NumberPicker
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.dp.R
 import com.example.dp.databinding.ActivityTabBinding
 import com.example.dp.objects.ChordsFinder
 import com.example.dp.objects.Song
+import com.example.dp.objects.TabsDBHelper
 
 
 class TabActivity : AppCompatActivity() {
@@ -37,6 +38,7 @@ class TabActivity : AppCompatActivity() {
     private var tabViewLinearLayout:LinearLayout? = null
     private val chordFinder = ChordsFinder()
     private var scrollTimer: CountDownTimer? = null
+    private var dbHelper = TabsDBHelper(this)
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,32 +46,16 @@ class TabActivity : AppCompatActivity() {
         binding = ActivityTabBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
-        tab = Song(intent.getIntExtra("EXTRA_SONG_ID", 0),
-
-            intent.getStringExtra("EXTRA_SONG_NAME").toString(),
-            intent.getStringExtra("EXTRA_SONG_ARTIST").toString(),
-            intent.getStringExtra("EXTRA_SONG_BODY").toString(),
-            intent.getStringExtra("EXTRA_SONG_CAPO").toString(),
-            intent.getStringExtra("EXTRA_SONG_TUNING").toString(),
-            intent.getStringExtra("EXTRA_SONG_KEY").toString(),
-            intent.getSerializableExtra("EXTRA_SONG_CHORDS") as ArrayList<String>,
-            intent.getIntExtra("EXTRA_MINUTES", 0),
-            intent.getIntExtra("EXTRA_SECONDS", 0)
-
-
-        )
+        tab = dbHelper.getOneTab(intent.getIntExtra("EXTRA_SONG_ID", 0))
 
         createTabViews()
         buildTabBody(defaultTextMeasure, defaultFontSize)
-
-
 
     }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "InflateParams")
     private fun createTabViews(){
 
         val zoomBtn = binding.zoomBtn
@@ -115,12 +101,14 @@ class TabActivity : AppCompatActivity() {
 
         //toggle automatic scroll with button
 
+        val autoScrollOnBackground = ContextCompat.getDrawable(this, R.drawable.a_s_on)
+
         var toggle = true
         automaticScrollButton.setOnClickListener {
 
             if (toggle){
 
-                automaticScrollButton.background = ColorDrawable(Color.MAGENTA)
+                automaticScrollButton.background = autoScrollOnBackground
                 triggerAS()
 
             }else{
@@ -134,8 +122,68 @@ class TabActivity : AppCompatActivity() {
         }
 
 
+        automaticScrollButton.setOnLongClickListener {
+
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.change_duration_dialog, null)
+            val minutesPicker = dialogView.findViewById<NumberPicker>(R.id.minutesPickerDialog)
+            val secondsPicker = dialogView.findViewById<NumberPicker>(R.id.secondsPickerDialog)
+            var updatedMinutes = 0
+            var updatedSeconds = 0
+
+            val alert: AlertDialog.Builder = AlertDialog.Builder(this)
+            alert.setView(dialogView)
+
+            alert.setTitle("Adjust duration of the song")
 
 
+
+            minutesPicker.minValue = 0
+            minutesPicker.maxValue = 60
+
+            minutesPicker.value = tab.minutes
+
+            secondsPicker.minValue = 0
+            secondsPicker.maxValue = 60
+
+            secondsPicker.value = tab.seconds
+
+            minutesPicker.setOnValueChangedListener { _, _, newVal ->
+                updatedMinutes = newVal
+            }
+
+            secondsPicker.setOnValueChangedListener { _, _, newVal ->
+                updatedSeconds = newVal
+            }
+
+            alert.setPositiveButton("Ok") { _, _ ->
+                updateTabDuration(updatedMinutes, updatedSeconds)
+
+            }
+
+            alert.setNegativeButton("Cancel",
+                DialogInterface.OnClickListener { _, _ ->
+                    // Canceled.
+                })
+
+
+            alert.show()
+
+            true
+
+        }
+
+
+    }
+
+    private fun updateTabDuration(minutes:Int, seconds:Int){
+
+        val dbHelper = TabsDBHelper(this)
+
+        dbHelper.updateTable(tab.id, tab.songName,tab.artist, tab.songBody, tab.capo, tab.tuning, tab.key, tab.songChords.joinToString(" "), minutes, seconds)
+
+        val intent = intent
+        finish()
+        startActivity(intent)
 
     }
 
@@ -153,7 +201,7 @@ class TabActivity : AppCompatActivity() {
 
 
         //once the scroll view has been set
-        scrollView.post {
+    scrollView.post {
             //pixels that each scroll moves
             val heightToScroll = 2
             //height of the tab
@@ -291,8 +339,6 @@ class TabActivity : AppCompatActivity() {
 
                         finalTabBody.setSpan(boldSpan, finalTabBody.length - currentLine.length - 1 , finalTabBody.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
 
-
-
                     }
 
                     //if current line is lyrics
@@ -313,8 +359,20 @@ class TabActivity : AppCompatActivity() {
                             val breakInLine =  findSpaceBeforeEnd(characterCapacity,currentLine)
 
                             finalTabBody.append((currentLine.substring(0, breakInLine))+ "\n")
+
+                            val boldSpan1 = StyleSpan(Typeface.BOLD)
+
+                            finalTabBody.setSpan(boldSpan1, finalTabBody.length - ((currentLine.substring(0, breakInLine).length)), finalTabBody.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+
                             finalTabBody.append(songLines[i+1] + "\n")
+
                             finalTabBody.append((currentLine.substring(breakInLine,currentLine.length))+ "\n")
+
+                            val boldSpan2 = StyleSpan(Typeface.BOLD)
+
+                            finalTabBody.setSpan(boldSpan2, finalTabBody.length - (currentLine.substring(breakInLine,currentLine.length)).length - 1, finalTabBody.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+
+
 
 
                             //if lyrics line doesn't fit

@@ -11,6 +11,7 @@ import android.media.MicrophoneInfo.Coordinate3F
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -61,6 +62,8 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
         createTransition(binding.myTabsLabel)
     }
 
+
+//    https://stackoverflow.com/questions/2614545/animate-change-of-view-background-color-on-android
     private fun createTransition(view: TextView){
 
         val transition = view.background as? TransitionDrawable
@@ -112,7 +115,6 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
             val alert: AlertDialog.Builder = AlertDialog.Builder(this)
 
             alert.setTitle("add set name")
-            alert.setMessage("Message")
 
             // Set an EditText view to get user input
 

@@ -337,6 +337,51 @@ public class TabsDBHelper extends SQLiteOpenHelper {
 
     }
 
+
+    public Song getOneTab(int songID) {
+
+        Song song = null;
+
+        String queryString = "SELECT * FROM " + TAB_TABLE + " WHERE " + COLUMN_SONG_ID + "=" + songID;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()) {
+//            loop through the cursor (result set) and create new tab objects
+            do {
+
+                int tabID = cursor.getInt(0);
+                String songName = cursor.getString(1);
+                String artist = cursor.getString(2);
+                String songBody = cursor.getString(3);
+                String capo = cursor.getString(4);
+                String tuning = cursor.getString(5);
+                String key = cursor.getString(6);
+                String songChords = cursor.getString(7);
+                int minutes = cursor.getInt(8);
+                int seconds = cursor.getInt(9);
+
+
+                String[] songChordsSplit = songChords.split(" ");
+
+                ArrayList<String> songChordsList = new ArrayList<>(
+                        Arrays.asList(songChordsSplit)
+                );
+
+                song = new Song(tabID, songName, artist, songBody, capo, tuning, key, songChordsList, minutes, seconds);
+
+            } while (cursor.moveToNext());
+
+        }
+
+        cursor.close();
+        db.close();
+        return song;
+
+    }
+
     public void updateTable(int id, String newSongName, String newArtistName,
                             String newSongBody, String newCapo, String newTuning, String newKey, String newSongChordsList, int newMinutes, int newSeconds) {
 
