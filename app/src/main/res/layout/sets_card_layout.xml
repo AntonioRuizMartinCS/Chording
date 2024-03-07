@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:layout_gravity="center"
         android:padding="5dp">
 
 
@@ -19,7 +20,7 @@
             android:layout_width="320dp"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:padding="5dp"
+            android:layout_gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.1"

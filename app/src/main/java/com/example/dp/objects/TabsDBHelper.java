@@ -415,4 +415,31 @@ public class TabsDBHelper extends SQLiteOpenHelper {
         db.close();
 
     }
+
+
+    public void updateSetName(int setID, String newSetName ) {
+
+        String query = "UPDATE " + SETS_TABLE + " SET " +
+                 SET_NAME + " = ? " +
+                "WHERE " + COLUMN_SET_ID + " = ?";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteStatement stmt = db.compileStatement(query);
+
+        stmt.bindString(1, newSetName);
+        stmt.bindLong(2, setID);
+
+        stmt.executeUpdateDelete();
+        db.close();
+
+    }
+
+
+
+
+
+
+
+
+
 }

@@ -30,10 +30,9 @@ import com.example.dp.objects.TabsDBHelper
 class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, TabsRVAdapter.OnMenuItemClickListener, SetsRVAdapter.OnItemClickListener, SetsRVAdapter.OnMenuItemClickListener {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var tabsDBHelper: TabsDBHelper
+    private var tabsDBHelper =  TabsDBHelper(this)
     private lateinit var myTabsList:ArrayList<Song>
     private lateinit var mySetsList:ArrayList<com.example.dp.objects.Set>
-    private lateinit var animator: ObjectAnimator
 
 
 
@@ -49,21 +48,32 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
 //            startActivity(it)
 //        }
 
-
+        updateTabsAndSets()
 
         tabsDBHelper = TabsDBHelper(this)
 
 //        tabsDBHelper.deleteTables()
-        myTabsList = tabsDBHelper.allTabs
-        mySetsList = tabsDBHelper.allSets
+        updateTabsAndSets()
 
         createRecyclersView()
         createButtons()
         createTransition(binding.myTabsLabel)
     }
 
+    override fun onRestart() {
 
-//    https://stackoverflow.com/questions/2614545/animate-change-of-view-background-color-on-android
+        updateTabsAndSets()
+
+        super.onRestart()
+    }
+
+    private fun updateTabsAndSets() {
+        myTabsList = tabsDBHelper.allTabs
+        mySetsList = tabsDBHelper.allSets
+    }
+
+
+    //    https://stackoverflow.com/questions/2614545/animate-change-of-view-background-color-on-android
     private fun createTransition(view: TextView){
 
         val transition = view.background as? TransitionDrawable
@@ -233,6 +243,35 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
     }
 
     override fun onEditSetClicked(position: Int) {
+
+        val alert: AlertDialog.Builder = AlertDialog.Builder(this)
+
+        alert.setTitle("Edit set name")
+
+        // Set an EditText view to get user input
+
+        // Set an EditText view to get user input
+        val input = EditText(this)
+        input.hint = mySetsList[position].setName
+        alert.setView(input)
+
+        alert.setPositiveButton("Ok", DialogInterface.OnClickListener { _, _ ->
+            // Do something with value!
+
+            val updatedSetName = input.text.toString()
+
+            tabsDBHelper.updateSetName(mySetsList[position].setID, updatedSetName)
+            updateTabsAndSets()
+            createRecyclersView()
+
+        })
+
+        alert.setNegativeButton("Cancel",
+            DialogInterface.OnClickListener { _, _ ->
+                // Canceled.
+            })
+
+        alert.show()
 
     }
 

@@ -74,10 +74,10 @@ class UploadActivity : AppCompatActivity() {
 
 
             secondsPicker.setOnValueChangedListener { _, _, newVal ->
-                seconds = newVal -1
+                seconds = newVal - 1
             }
             minutesPicker.setOnValueChangedListener { _, _, newVal ->
-                minutes = newVal -1
+                minutes = newVal - 1
             }
 
 
@@ -213,7 +213,9 @@ class UploadActivity : AppCompatActivity() {
                 binding.editArtistName.setText(fileImporter.findSongArtist(readTextFromUri(uri)))
                 binding.songBody.setText(fileImporter.findSongBody(readTextFromUri(uri)))
                 binding.durationPickerMinutes.value = fileImporter.findSongMinutes(readTextFromUri(uri))
+                minutes = fileImporter.findSongMinutes(readTextFromUri(uri))
                 binding.durationPickerSeconds.value = fileImporter.findSongSeconds(readTextFromUri(uri))
+                seconds = fileImporter.findSongSeconds(readTextFromUri(uri))
 
 
             }

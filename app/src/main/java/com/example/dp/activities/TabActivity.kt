@@ -127,15 +127,13 @@ class TabActivity : AppCompatActivity() {
             val dialogView = LayoutInflater.from(this).inflate(R.layout.change_duration_dialog, null)
             val minutesPicker = dialogView.findViewById<NumberPicker>(R.id.minutesPickerDialog)
             val secondsPicker = dialogView.findViewById<NumberPicker>(R.id.secondsPickerDialog)
-            var updatedMinutes = 0
-            var updatedSeconds = 0
+            var updatedMinutes = tab.minutes
+            var updatedSeconds = tab.seconds
 
             val alert: AlertDialog.Builder = AlertDialog.Builder(this)
             alert.setView(dialogView)
 
             alert.setTitle("Adjust duration of the song")
-
-
 
             minutesPicker.minValue = 0
             minutesPicker.maxValue = 60
