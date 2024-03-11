@@ -194,7 +194,7 @@ class EditTabActivity : AppCompatActivity() {
         val updatedArtist = binding.editArtistName.text.toString()
         val updatedSongBody = binding.songBody.text.toString()
         val chordsFinder = ChordsFinder()
-        val updatedSongChords = chordsFinder.findChords(updatedSongBody.split("\r\n"))
+        val updatedSongChords = chordsFinder.findChords(updatedSongBody.split("\n"))
 
         val dbHelper = TabsDBHelper(this)
         val updatedSong = Song(tab.id, updatedSongName, updatedArtist, updatedSongBody, capo, tuning, key, updatedSongChords, tab.minutes, tab.seconds)

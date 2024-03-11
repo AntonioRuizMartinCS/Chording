@@ -250,7 +250,7 @@ class UploadActivity : AppCompatActivity() {
         val artist = binding.editArtistName.text.toString()
         val songBody = binding.songBody.text.toString()
         val chordsFinder = ChordsFinder()
-        val songChords: ArrayList<String> = chordsFinder.findChords(songBody.split("\r\n"))
+        val songChords:ArrayList<String> = chordsFinder.findChords(songBody.split("\n"))
 
 
         val song = Song(songID, songName, artist, songBody, capo, tuning, key, songChords, minutes, seconds)

@@ -4,6 +4,7 @@ package com.example.dp.activities
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
@@ -12,11 +13,13 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -40,6 +43,7 @@ class TabActivity : AppCompatActivity() {
     private var scrollTimer: CountDownTimer? = null
     private var dbHelper = TabsDBHelper(this)
 
+
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +52,22 @@ class TabActivity : AppCompatActivity() {
         setContentView(view)
         tab = dbHelper.getOneTab(intent.getIntExtra("EXTRA_SONG_ID", 0))
 
+        val toolbar:androidx.appcompat.widget.Toolbar = binding.tabScreenToolbar
+        setSupportActionBar(toolbar)
+
+
         createTabViews()
+
         buildTabBody(defaultTextMeasure, defaultFontSize)
 
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+
+
+        return true
     }
 
 
@@ -69,7 +86,7 @@ class TabActivity : AppCompatActivity() {
         binding.tabKey.text = "Key: ${tab.key}"
         binding.tabCapo.text = "Capo: ${tab.capo}"
         binding.tabDuration.text = "Duration: ${tab.minutes}:${tab.seconds}"
-        binding.tabChords.text = tab.songChords.joinToString(" ")
+        binding.tabChords.text = tab.songChords.joinToString("  ")
 
         zoomBtn.setOnClickListener {
             zoomBtn.visibility = View.INVISIBLE
@@ -95,6 +112,26 @@ class TabActivity : AppCompatActivity() {
                 automaticScrollButton.visibility = View.VISIBLE
             }
 
+
+        }
+
+        binding.edtiIconTabView.setOnClickListener {
+
+            Intent(this, EditTabActivity::class.java).also {
+
+                it.putExtra("EXTRA_SONG_ID", tab.id)
+                it.putExtra("EXTRA_SONG_NAME", tab.songName)
+                it.putExtra("EXTRA_SONG_ARTIST", tab.artist)
+                it.putExtra("EXTRA_SONG_BODY", tab.songBody)
+                it.putExtra("EXTRA_SONG_CAPO", tab.capo)
+                it.putExtra("EXTRA_SONG_TUNING", tab.tuning)
+                it.putExtra("EXTRA_SONG_KEY", tab.key)
+                it.putExtra("EXTRA_SONG_CHORDS", tab.songChords)
+                it.putExtra("EXTRA_MINUTES", tab.minutes)
+                it.putExtra("EXTRA_SECONDS", tab.seconds)
+
+                startActivity(it)
+            }
 
         }
 
