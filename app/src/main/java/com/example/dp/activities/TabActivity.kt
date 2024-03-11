@@ -63,14 +63,6 @@ class TabActivity : AppCompatActivity() {
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
-
-
-        return true
-    }
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n", "InflateParams")
     private fun createTabViews(){
@@ -132,6 +124,13 @@ class TabActivity : AppCompatActivity() {
 
                 startActivity(it)
             }
+
+        }
+
+
+
+        binding.tabOptionsMenu.setOnClickListener {
+            BottomSheet(tab).show(supportFragmentManager, "newTaskTag")
 
         }
 

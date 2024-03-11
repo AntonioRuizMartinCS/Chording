@@ -18,18 +18,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tabScreenToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="  GfG | Tool bar"
-             />
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/tabScreenToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/tabOptionsMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_marginEnd="8dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:layout_constraintBottom_toBottomOf="@+id/tabScreenToolbar"
+                app:layout_constraintEnd_toEndOf="@+id/tabScreenToolbar"
+                app:layout_constraintHorizontal_bias="0.90"
+                app:layout_constraintTop_toTopOf="@+id/tabScreenToolbar"
+                android:background="@drawable/baseline_more_horiz_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
