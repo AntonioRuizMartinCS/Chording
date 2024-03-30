@@ -1,6 +1,7 @@
 package com.example.dp.activities
 
 
+import android.content.ClipData
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -38,6 +39,7 @@ class BottomSheet(private val tab:Song) : BottomSheetDialogFragment() {
         shareButton.setOnClickListener {
             val fileName = "${tab.songName}.txt"
 
+            //create the text file with the sheet that we want to share
             writeToFile(fileName, buildTabSheet().joinToString("\n"))
 
 
@@ -86,6 +88,7 @@ class BottomSheet(private val tab:Song) : BottomSheetDialogFragment() {
     }
 
 
+    //building the tab sheet
     private fun buildTabSheet(): ArrayList<String>{
 
         val duration = " ${tab.minutes} : ${tab.seconds}"
@@ -103,13 +106,14 @@ class BottomSheet(private val tab:Song) : BottomSheetDialogFragment() {
 
     }
 
+    //https://www.youtube.com/watch?v=wc4p6sYR3B4&t=90s
+    //writing the data to a text file
     private fun writeToFile(fileName:String, content:String){
 
 
         val writer = FileOutputStream(File(path, fileName))
         writer.write(content.toByteArray())
         writer.close()
-        Toast.makeText(context, "successfully saved $fileName", Toast.LENGTH_SHORT).show()
 
 
     }

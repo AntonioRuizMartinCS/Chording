@@ -1,18 +1,15 @@
 package com.example.dp.activities
 
 
-import android.animation.ObjectAnimator
+
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.TransitionDrawable
-import android.media.MicrophoneInfo.Coordinate3F
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
-import android.widget.NumberPicker
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,6 +30,9 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
     private var tabsDBHelper =  TabsDBHelper(this)
     private lateinit var myTabsList:ArrayList<Song>
     private lateinit var mySetsList:ArrayList<com.example.dp.objects.Set>
+    private lateinit var searchView:SearchView
+    private lateinit var tabsAdapter:TabsRVAdapter
+
 
 
 
@@ -48,13 +48,12 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
 //            startActivity(it)
 //        }
 
-        updateTabsAndSets()
 
         tabsDBHelper = TabsDBHelper(this)
 
 //        tabsDBHelper.deleteTables()
-        updateTabsAndSets()
 
+        updateTabsAndSets()
         createRecyclersView()
         createButtons()
         createTransition(binding.myTabsLabel)
@@ -85,76 +84,119 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
         view.background = transitionDrawable
     }
 
+
+
     private fun createButtons(){
 
-        val addBtn = binding.addBtn
         val setsBtn = binding.mySetsLabel
         val tabsBtn = binding.myTabsLabel
-        val addSetBtn = binding.addSetButton
 
-        addBtn.setOnClickListener{
-            Intent(this, UploadActivity::class.java).also {
-                startActivity(it)
-            }
-        }
+        updateAddButtonClickListener()
+
 
         setsBtn.setOnClickListener{
             binding.setsRecyclerView.visibility = View.VISIBLE
             binding.tabsRecyclerView.visibility = View.INVISIBLE
-            binding.addSetButton.visibility = View.VISIBLE
             createTransition(setsBtn)
             resetTransition(tabsBtn)
-
-
-
+            updateAddButtonClickListener()
 
         }
         tabsBtn.setOnClickListener{
 
             binding.setsRecyclerView.visibility = View.INVISIBLE
             binding.tabsRecyclerView.visibility = View.VISIBLE
-            binding.addSetButton.visibility = View.INVISIBLE
             createTransition(tabsBtn)
             resetTransition(setsBtn)
+            updateAddButtonClickListener()
 
         }
 
-        addSetBtn.setOnClickListener{
-//            https://stackoverflow.com/questions/4134117/edittext-on-a-popup-window
+        binding.sortByButton.setOnClickListener {
 
-            val alert: AlertDialog.Builder = AlertDialog.Builder(this)
+                createSortByMenu()
 
-            alert.setTitle("add set name")
+        }
+    }
 
-            // Set an EditText view to get user input
 
-            // Set an EditText view to get user input
-            val input = EditText(this)
-            alert.setView(input)
 
-            alert.setPositiveButton("Ok", DialogInterface.OnClickListener { _, _ ->
-                // Do something with value!
+    private fun updateAddButtonClickListener() {
+        val addBtn = binding.addBtn
 
-                val setID = mySetsList.size + 1
-                val setName = input.text.toString()
+//        https://stackoverflow.com/questions/4134117/edittext-on-a-popup-window
+        if (binding.setsRecyclerView.visibility == View.VISIBLE) {
+            addBtn.setOnClickListener {
+                val alert: AlertDialog.Builder = AlertDialog.Builder(this)
+                alert.setTitle("add set name")
 
-                val newSet = com.example.dp.objects.Set(setID,setName)
-                tabsDBHelper.addOneSet(newSet)
+                val input = EditText(this)
+                alert.setView(input)
 
-                mySetsList = tabsDBHelper.allSets
-                createRecyclersView()
+                alert.setPositiveButton("Ok", DialogInterface.OnClickListener { _, _ ->
+                    val setID = mySetsList.size + 1
+                    val setName = input.text.toString()
 
-            })
+                    val newSet = com.example.dp.objects.Set(setID, setName)
+                    tabsDBHelper.addOneSet(newSet)
 
-            alert.setNegativeButton("Cancel",
-                DialogInterface.OnClickListener { _, _ ->
+                    mySetsList = tabsDBHelper.allSets
+                    createRecyclersView()
+                })
+
+                alert.setNegativeButton("Cancel", DialogInterface.OnClickListener { _, _ ->
                     // Canceled.
                 })
 
-            alert.show()
-
-
+                alert.show()
+            }
+        } else {
+            addBtn.setOnClickListener {
+                Intent(this, UploadActivity::class.java).also {
+                    startActivity(it)
+                }
+            }
         }
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    private fun createSortByMenu(){
+
+        val popupMenu = PopupMenu(this, binding.sortByButton)
+
+        popupMenu.menuInflater.inflate(R.menu.sort_by_context_menu, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { item ->
+
+            when(item.itemId){
+
+                R.id.sortAZ ->{
+
+                    myTabsList.sortWith(compareByDescending<Song> { it.songName}.reversed())
+                    createRecyclersView()
+                    binding.sortByButton.text = "A - Z"
+                }
+
+                R.id.sortByArtist -> {
+
+                    myTabsList.sortWith(compareByDescending<Song> { it.artist}.reversed())
+                    createRecyclersView()
+                    binding.sortByButton.text = "By artist"
+                }
+
+                R.id.sortByDate -> {
+
+                    myTabsList.sortWith(compareByDescending<Song> { it.id}.reversed())
+                    createRecyclersView()
+                    binding.sortByButton.text = "By date"
+                }
+
+            }
+            true
+        }
+        popupMenu.show()
+
     }
 
     private fun createRecyclersView(){
@@ -180,11 +222,53 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
             )
         }
 
-        val tabsAdapter = TabsRVAdapter(tabsData, this, this)
+        tabsAdapter = TabsRVAdapter(tabsData, this, this)
         val setsAdapter = SetsRVAdapter(setsData, this, this)
 
         tabsRecyclerView.adapter = tabsAdapter
         setsRecyclerView.adapter = setsAdapter
+
+
+        searchView = binding.searchView
+
+        searchView.isActivated = true
+        searchView.queryHint = "Search tab by song name"
+        searchView.onActionViewExpanded()
+        searchView.isIconified = false
+        searchView.clearFocus()
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                filter(newText)
+                return false
+            }
+        })
+
+
+
+
+    }
+
+//    https://www.geeksforgeeks.org/android-searchview-with-recyclerview-using-kotlin/
+    private fun filter(text: String) {
+        // creating a new array list to filter our data.
+        val filteredList: ArrayList<TabsViewModel> = ArrayList()
+
+        // running a for loop to compare elements.
+        for (item in myTabsList) {
+            // checking if the entered string matched with any item of our recycler view.
+            if (item.songName.toLowerCase().contains(text.toLowerCase())) {
+                // if the item is matched we are
+                // adding it to our filtered list.
+                filteredList.add(TabsViewModel(item.songName, item.artist, R.drawable.baseline_more_vert_24))
+            }
+        }
+
+            tabsAdapter.filterList(filteredList)
 
     }
 

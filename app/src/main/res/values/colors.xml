@@ -3,7 +3,8 @@
     <color name="accent">#588157</color>
     <color name="secondary">#A3B18A</color>
     <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_200">#588157</color>
+    <color name="teal_2000">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>

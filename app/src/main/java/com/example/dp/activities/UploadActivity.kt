@@ -128,8 +128,6 @@ class UploadActivity : AppCompatActivity() {
             }
 
 
-
-
             tuningSpinner.onItemSelectedListener = object :
 
                 AdapterView.OnItemSelectedListener{

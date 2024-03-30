@@ -7,43 +7,44 @@
     tools:context=".activities.MainActivity">
 
 
-    <ImageView
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_btn"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:background="@drawable/add_fab_shape"
-        android:src="@drawable/add_icon"
-        android:foreground="?android:attr/selectableItemBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/todo"
         android:translationZ="90dp"
+        android:src="@drawable/baseline_add_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95"
-        android:contentDescription="@string/todo" />
+        app:layout_constraintVertical_bias="0.95" />
 
-    <SearchView
+
+    <android.widget.SearchView
+        android:id="@+id/searchView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="25dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/rounded_border"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0" />
+        app:layout_constraintVertical_bias="0.01" />
 
     <TextView
         android:id="@+id/myTabsLabel"
         android:layout_width="100dp"
         android:layout_height="30dp"
-        android:ems="10"
-        android:text="@string/my_tabs"
-        android:gravity="center"
         android:background="@drawable/bottom_line_transition"
+        android:ems="10"
+        android:gravity="center"
+        android:text="@string/my_tabs"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,10 +57,10 @@
         android:id="@+id/mySetsLabel"
         android:layout_width="100dp"
         android:layout_height="30dp"
-        android:ems="10"
-        android:text="@string/my_sets"
         android:background="@drawable/bottom_line_transition"
+        android:ems="10"
         android:gravity="center"
+        android:text="@string/my_sets"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,6 +68,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.12" />
+
+
+    <Button
+        android:id="@+id/sortByButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:drawableEnd="@drawable/baseline_keyboard_arrow_down_24"
+        android:text="@string/sortByDate"
+        android:textAllCaps="false"
+        android:textColor="@color/accent"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tabsRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tabsRecyclerView"
@@ -82,7 +101,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/setsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="500dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,18 +110,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1" />
 
-    <Button
-        android:id="@+id/addSetButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_set"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.23" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,11 +1,10 @@
 package com.example.dp.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.*
 import android.view.View.OnClickListener
-import android.widget.ImageView
-import android.widget.PopupMenu
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dp.R
 import com.example.dp.activities.MainActivity
@@ -13,10 +12,10 @@ import com.example.dp.activities.SetActivity
 import com.example.dp.models.TabsViewModel
 
 class TabsRVAdapter(
-    private val mList: List<TabsViewModel>,
+    private var mList: List<TabsViewModel>,
     private val listener: OnItemClickListener,
-    private val menuItemClickListener: OnMenuItemClickListener
-                    ) : RecyclerView.Adapter<TabsRVAdapter.ViewHolder>() {
+    private val menuItemClickListener: OnMenuItemClickListener,
+                    ) : RecyclerView.Adapter<TabsRVAdapter.ViewHolder>(){
 
 
 
@@ -28,6 +27,17 @@ class TabsRVAdapter(
             .inflate(R.layout.tabs_card_layout, parent, false)
 
         return ViewHolder(view)
+    }
+
+//    https://www.geeksforgeeks.org/android-searchview-with-recyclerview-using-kotlin/
+    @SuppressLint("NotifyDataSetChanged")
+    fun filterList(filterlist: ArrayList<TabsViewModel>) {
+        // below line is to add our filtered
+        // list in our course array list.
+        mList = filterlist
+        // below line is to notify our adapter
+        // as change in recycler view data.
+        notifyDataSetChanged()
     }
 
     // binds the list items to a view
@@ -107,6 +117,8 @@ class TabsRVAdapter(
         }
         popupMenu.show()
     }
+
+
 }
 
 
