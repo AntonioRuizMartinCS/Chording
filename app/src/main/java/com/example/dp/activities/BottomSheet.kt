@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.example.dp.databinding.FragmentBottomSheetBinding
+import com.example.dp.objects.PdfCreator
 import com.example.dp.objects.Song
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.io.File
@@ -32,6 +33,7 @@ class BottomSheet(private val tab:Song) : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val shareButton = binding.tabShare
+        val printButton = binding.tabPrint
 
         // Initialize path variable
         path = requireContext().filesDir
@@ -73,6 +75,15 @@ class BottomSheet(private val tab:Song) : BottomSheetDialogFragment() {
                 // Handle case where file does not exist
                 Toast.makeText(requireContext(), "File does not exist", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        printButton.setOnClickListener {
+
+            val pdfCreator = PdfCreator()
+            context?.let { it1 -> pdfCreator.generatePDF(it1, tab) }
+
+
+
         }
     }
 
