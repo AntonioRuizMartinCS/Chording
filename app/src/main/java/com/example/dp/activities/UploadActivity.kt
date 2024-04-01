@@ -239,8 +239,6 @@ class UploadActivity : AppCompatActivity() {
 
     private fun uploadSong(){
 
-
-
         val songID = tabs.size + 1
         val songName = binding.editSongTitle.text.toString()
         val artist = binding.editArtistName.text.toString()
@@ -257,11 +255,16 @@ class UploadActivity : AppCompatActivity() {
 
         val dbHelper = TabsDBHelper(this)
 
+
+        //checks if the copyright information has been acknowledge by the user
+        //if hasn't been:
         if (dbHelper.acknowledgement == 0){
 
                 Intent(this, AcknowledgementActivity::class.java).also {
                 startActivity(it)
                 }
+
+        //if has been:
         }else{
             val success:Boolean = dbHelper.addOneSong(song)
             if (success){

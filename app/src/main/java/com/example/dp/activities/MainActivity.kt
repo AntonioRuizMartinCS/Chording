@@ -90,6 +90,7 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
 
         val setsBtn = binding.mySetsLabel
         val tabsBtn = binding.myTabsLabel
+        val mainScreenSettingsBtn = binding.mainScreenSettingsBtn
 
         updateAddButtonClickListener()
 
@@ -116,6 +117,13 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
 
                 createSortByMenu()
 
+        }
+
+        mainScreenSettingsBtn.setOnClickListener {
+
+           Intent(this, SettingsActivity::class.java).also {
+               startActivity(it)
+                 }
         }
     }
 

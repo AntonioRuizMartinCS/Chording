@@ -129,6 +129,7 @@
     <string name="cancel">Cancel</string>
     <string name="accept">Accept</string>
     <string name="i_confirm_that_i_have_read_the_copyright_information">I confirm that I have read the copyright information</string>
+    <string name="dark_mode">Dark mode</string>
 
 
 </resources>
