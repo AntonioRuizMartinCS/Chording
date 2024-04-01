@@ -1,5 +1,6 @@
 package com.example.dp.objects;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -17,11 +18,21 @@ import java.util.Arrays;
 public class TabsDBHelper extends SQLiteOpenHelper {
 
     public static final String TAB_TABLE = "TAB_TABLE";
+
     public static final String SETS_TABLE = "SETS_TABLE";
-    public static final String COLUMN_SET_ID = "SET_ID";
-    public static final String SET_NAME = "SET_NAME";
 
     public static final String SONG_SETS_TABLE = "SONG_SETS_TABLE";
+
+    public static final String ACKNOWLEDGEMENT_TABLE = "ACKNOWLEDGEMENT_TABLE";
+
+    public static final String COLUMN_SET_ID = "SET_ID";
+
+
+
+    public static final String ACKNOWLEDGEMENT_GIVEN = "ACKNOWLEDGEMENT";
+    public static final String SET_NAME = "SET_NAME";
+
+
 
     public static final String COLUMN_SONG_ID = "SONG_ID";
     public static final String COLUMN_SONG_NAME = "SONG_NAME";
@@ -31,9 +42,7 @@ public class TabsDBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_TUNING = "TUNING";
     public static final String COLUMN_SONG_KEY = "SONG_KEY";
     public static final String COLUMN_CHORDS = "CHORDS";
-
     public static final String COLUMN_MINUTES = "MINUTES";
-
     public static final String COLUMN_SECONDS = "SECONDS";
 
 
@@ -75,6 +84,16 @@ public class TabsDBHelper extends SQLiteOpenHelper {
 
         db.execSQL(createJunctionTableStatement);
 
+
+        String createAcknowledgementTableStatement = "CREATE TABLE " + ACKNOWLEDGEMENT_TABLE + " ("
+                + ACKNOWLEDGEMENT_GIVEN + " INTEGER)";
+
+        String addInitialValueStatement = "INSERT INTO " + ACKNOWLEDGEMENT_TABLE + " (" + ACKNOWLEDGEMENT_GIVEN + ") VALUES (0);";
+
+
+        db.execSQL(createAcknowledgementTableStatement);
+        db.execSQL(addInitialValueStatement);
+
     }
 
     //called when the db is updated. Provides forward compatibility
@@ -88,6 +107,7 @@ public class TabsDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TAB_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + SETS_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + SONG_SETS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + ACKNOWLEDGEMENT_TABLE);
 
         onCreate(db);
         db.close();
@@ -289,6 +309,66 @@ public class TabsDBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return setsList;
+    }
+
+
+    public boolean addAcknowledgement() {
+
+        int acknowledgement = 0;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(ACKNOWLEDGEMENT_GIVEN, acknowledgement);
+
+        long insert = db.insert(ACKNOWLEDGEMENT_TABLE, null, cv);
+
+        return insert != -1;
+    }
+
+
+    @SuppressLint("Range")
+    public int getAcknowledgement(){
+
+        int acknowledgement = 0;
+
+        String queryString = "SELECT * FROM " + ACKNOWLEDGEMENT_TABLE;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()) {
+            // Read the value from the cursor
+            acknowledgement = cursor.getInt(cursor.getColumnIndex(ACKNOWLEDGEMENT_GIVEN));
+        }
+
+
+        cursor.close();
+        db.close();
+        return acknowledgement;
+    }
+
+    public void updateAcknowledgement(Boolean bool) {
+
+        int newAcknowledgement = 0;
+
+        if (bool){
+            newAcknowledgement = 1;
+        }
+
+        String query = "UPDATE " + ACKNOWLEDGEMENT_TABLE + " SET " +
+                ACKNOWLEDGEMENT_GIVEN + " = ?";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteStatement stmt = db.compileStatement(query);
+
+        stmt.bindLong(1, newAcknowledgement);
+
+
+        stmt.executeUpdateDelete();
+        db.close();
+
     }
 
 

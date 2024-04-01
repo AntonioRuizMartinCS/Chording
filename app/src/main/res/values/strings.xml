@@ -111,6 +111,24 @@
     <string name="sortByDate">By date</string>
     <string name="sortAlphabetically">A - Z</string>
     <string name="sortByArtist">By artist</string>
+    <string name="copyright_acknowledgement">Copyright Acknowledgement</string>
+    <string name="copyright_acknowledgement_content">
+
+        Our application serves as a platform for users to privately upload and access chord sheets for songs. These songs may include compositions by the user or copyrighted music. It is important to note that our application does not facilitate the sharing of chord sheets between users. \n \n
+
+        Our primary function is to provide users with a personal and exclusive local database for storing and accessing chord sheets for their individual use. Users are solely responsible for ensuring that the chord sheets they upload and use comply with copyright laws. \n \n
+
+        We emphasize that the use of copyrighted material within our application is intended solely for private and personal use by individual users. Any sharing, distribution, or reproduction of copyrighted material outside the application is strictly prohibited. \n \n
+
+        By using our application, users acknowledge and agree to adhere to all applicable copyright laws and regulations. We encourage users to respect the rights of copyright holders and to seek appropriate permissions when necessary. \n \n
+
+        Our application does not claim ownership of any chord sheets uploaded by users. All intellectual property rights to the content uploaded by users remain with the respective owners. \n \n
+
+        Thank you for your understanding and cooperation in upholding copyright laws and protecting the rights of creators.</string>
+    <string name="checkedtextview">CheckedTextView</string>
+    <string name="cancel">Cancel</string>
+    <string name="accept">Accept</string>
+    <string name="i_confirm_that_i_have_read_the_copyright_information">I confirm that I have read the copyright information</string>
 
 
 </resources>

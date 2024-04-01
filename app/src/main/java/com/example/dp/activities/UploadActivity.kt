@@ -40,8 +40,6 @@ class UploadActivity : AppCompatActivity() {
         binding = ActivityUploadBinding.inflate(layoutInflater)
         val view = binding.root
 
-
-
         setContentView(view)
         buildActivityViews()
 
@@ -220,8 +218,6 @@ class UploadActivity : AppCompatActivity() {
         }
     }
 
-
-
     @Throws(IOException::class)
     private fun readTextFromUri(uri: Uri): ArrayList<String> {
 
@@ -243,6 +239,8 @@ class UploadActivity : AppCompatActivity() {
 
     private fun uploadSong(){
 
+
+
         val songID = tabs.size + 1
         val songName = binding.editSongTitle.text.toString()
         val artist = binding.editArtistName.text.toString()
@@ -259,16 +257,22 @@ class UploadActivity : AppCompatActivity() {
 
         val dbHelper = TabsDBHelper(this)
 
-        val success:Boolean = dbHelper.addOneSong(song)
+        if (dbHelper.acknowledgement == 0){
 
-        if (success){
-            Toast.makeText(this, "Tab was saved successfully", Toast.LENGTH_SHORT).show()
-        }
+                Intent(this, AcknowledgementActivity::class.java).also {
+                startActivity(it)
+                }
+        }else{
+            val success:Boolean = dbHelper.addOneSong(song)
+            if (success){
+                Toast.makeText(this, "Tab was saved successfully", Toast.LENGTH_SHORT).show()
+            }
 
-        Intent(this, MainActivity::class.java).also {
+            Intent(this, MainActivity::class.java).also {
 
-            startActivity(it)
+                startActivity(it)
 
+            }
         }
     }
 }
