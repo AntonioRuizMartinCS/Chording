@@ -245,12 +245,12 @@ class TabActivity : AppCompatActivity() {
             //formula for how often should the intervals be
             val scrollPeriod = songTime/((viewHeight- marginSpace!!)/heightToScroll)
 
-            scrollTimer = object : CountDownTimer(songTime.toLong(), scrollPeriod.toLong()) {
+
+            scrollTimer = object : CountDownTimer(Long.MAX_VALUE, scrollPeriod.toLong()) {
 
                     @SuppressLint("SetTextI18n")
                     override fun onTick(millisUntilFinished: Long) {
                         scrollView.scrollBy(0, heightToScroll)
-                        binding.countdown.text = "seconds remaining: " + millisUntilFinished / 1000
                     }
 
                     override fun onFinish() {
@@ -440,7 +440,6 @@ class TabActivity : AppCompatActivity() {
             tabBodyTextView.text = finalTabBody
             tabBodyTextView.textSize = fontSize // Set text size
             tabBodyTextView.typeface = resources.getFont(R.font.cousine) // Set font
-            tabBodyTextView.setTextColor(resources.getColor(android.R.color.black)) // Set text color
 
             tabViewLinearLayout?.addView(tabBodyTextView)
 

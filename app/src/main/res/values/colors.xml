@@ -2,6 +2,7 @@
 <resources>
     <color name="accent">#588157</color>
     <color name="secondary">#A3B18A</color>
+    <color name="text_color_primary">#FF000000</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#588157</color>
     <color name="teal_2000">#FF03DAC5</color>
