@@ -73,35 +73,57 @@ class PdfCreator {
 
         val songLines = tab.songBody.split("\n")
         val numberOfLines = songLines.size
-        val pagesNeeded = ceil((((numberOfLines * 30) - 880) / 1090).toDouble()).toInt()
+        val numberOfLinesOn1stPage = 29
+        val numberOfLinesOnNewPage = 36
+        val pagesNeeded = ceil((((numberOfLines * 30) - 880) / 1090).toDouble()).toInt() + 1
 
-        var i = 240F
+        var z = 240F
 
-        for (songLine in songLines){
-
-            canvas.drawText(songLine, 50F, i, body)
-            i += 30F
-
+        for (i in 0..numberOfLinesOn1stPage){
+            canvas.drawText(songLines[i], 50F, z, body)
+            z += 30F
         }
 
         pdfDocument.finishPage(myPage)
 
-        val page1 = pdfDocument.startPage(myPageInfo)
+       if (pagesNeeded == 1){
 
-        val canvas1 = page1.canvas
+           val newPage = pdfDocument.startPage(myPageInfo)
+           val newCanvas = newPage.canvas
+           z = 30F
 
-        i = 30F
+           for (i in numberOfLinesOn1stPage +1.. numberOfLines){
+               newCanvas.drawText(songLines[i], 50F, z, body)
+               z += 30F
+           }
+           pdfDocument.finishPage(newPage)
 
-        for (songLine in songLines){
+       }
 
-            canvas1.drawText(songLine, 50F, i, body)
-            i += 30F
+        if (pagesNeeded == 2){
+
+            val newPage = pdfDocument.startPage(myPageInfo)
+            val newCanvas = newPage.canvas
+            z = 30F
+
+            for (i in numberOfLinesOn1stPage +1 until numberOfLinesOn1stPage + numberOfLinesOnNewPage){
+                newCanvas.drawText(songLines[i], 50F, z, body)
+                z += 30F
+            }
+            pdfDocument.finishPage(newPage)
+
+            val newPage1 = pdfDocument.startPage(myPageInfo)
+            val newCanvas1 = newPage1.canvas
+
+            z = 30F
+
+            for (i in numberOfLinesOn1stPage + numberOfLinesOnNewPage +1 until numberOfLines){
+                newCanvas1.drawText(songLines[i], 50F, z, body)
+                z += 30F
+            }
+            pdfDocument.finishPage(newPage1)
 
         }
-
-        pdfDocument.finishPage(page1)
-
-
 
         val file = File(context.filesDir, "${tab.songName}.pdf")
 
