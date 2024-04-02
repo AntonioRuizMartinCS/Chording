@@ -2,9 +2,13 @@ package com.example.dp.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.view.*
 import android.view.View.OnClickListener
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dp.R
 import com.example.dp.activities.MainActivity
@@ -19,12 +23,26 @@ class TabsRVAdapter(
 
 
 
+
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
         // that is used to hold list item
+
+
+
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.tabs_card_layout, parent, false)
+
+        val sharedPreferences = view.context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+
+        if (sharedPreferences.getBoolean("darkMode", false)){
+            view.background = ContextCompat.getDrawable(view.context, R.drawable.card_view_night_mode_background)
+        }else{
+            view.background = ContextCompat.getDrawable(view.context, R.drawable.card_view_day_mode_background)
+        }
+
+
 
         return ViewHolder(view)
     }

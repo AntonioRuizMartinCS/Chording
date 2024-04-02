@@ -2,6 +2,7 @@ package com.example.dp.activities
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -45,6 +46,16 @@ class SettingsActivity : AppCompatActivity() {
 
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private fun createActivityViews(sharedPreferences: SharedPreferences) {
+
+        val copyrightBtn = binding.copyrightScreenBtn
+
+        copyrightBtn.setOnClickListener {
+
+                   Intent(this, AcknowledgementActivity::class.java).also {
+                       startActivity(it)
+                   }
+        }
+
 
         val editor = sharedPreferences.edit()
 

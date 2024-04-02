@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/todo"
         android:src="@drawable/baseline_add_24"
+        android:backgroundTint="@color/accent"
         android:translationZ="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

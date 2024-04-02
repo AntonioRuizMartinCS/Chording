@@ -61,14 +61,15 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
 
 //        tabsDBHelper.deleteTables()
 
+        sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+        applySharedPrefs()
+
         updateTabsAndSets()
         createRecyclersView()
         createButtons()
         createTransition(binding.myTabsLabel)
 
-        sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
 
-        applySharedPrefs()
 
     }
 
@@ -252,6 +253,8 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
                 SetsViewModel(mySetsList[i].setName, R.drawable.baseline_more_vert_24)
             )
         }
+
+
 
         tabsAdapter = TabsRVAdapter(tabsData, this, this)
         val setsAdapter = SetsRVAdapter(setsData, this, this)

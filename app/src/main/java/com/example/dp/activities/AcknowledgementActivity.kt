@@ -27,7 +27,7 @@ class AcknowledgementActivity : AppCompatActivity() {
         val cancelButton = binding.cancelButton
         val checkBox = binding.copyrightCheckBox
 
-
+        checkBox.isChecked = dbHelper.acknowledgement != 0
 
         acceptButton.setOnClickListener {
 

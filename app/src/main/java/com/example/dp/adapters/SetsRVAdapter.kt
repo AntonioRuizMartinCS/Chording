@@ -1,11 +1,13 @@
 package com.example.dp.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dp.R
 import com.example.dp.models.SetsViewModel
@@ -25,6 +27,13 @@ class SetsRVAdapter(
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.sets_card_layout, parent, false)
 
+        val sharedPreferences = view.context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+
+        if (sharedPreferences.getBoolean("darkMode", false)){
+            view.background = ContextCompat.getDrawable(view.context, R.drawable.card_view_night_mode_background)
+        }else{
+            view.background = ContextCompat.getDrawable(view.context, R.drawable.card_view_day_mode_background)
+        }
         return ViewHolder(view)
     }
 
