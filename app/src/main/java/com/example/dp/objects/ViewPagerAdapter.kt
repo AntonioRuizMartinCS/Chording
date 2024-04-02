@@ -17,29 +17,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.NumberPicker
-import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dp.R
 import com.example.dp.activities.EditTabActivity
 import com.example.dp.databinding.TabItemBinding
-import com.google.android.material.tabs.TabLayout.Tab
+
 
 class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
     RecyclerView.Adapter<ViewPagerAdapter.ViewPagerViewHolder>() {
 
-    private var defaultFontSize = 12f
+    private var scrollTimer:CountDownTimer? = null
+    private var defaultFontSize = 12F
     private var newFontSize = defaultFontSize
-    private var defaultTextMeasure = (defaultFontSize * 1.8).toInt()
-    private var tabViewLinearLayout: LinearLayout? = null
-    private val chordFinder = ChordsFinder()
-    private var scrollTimer: CountDownTimer? = null
-    private var toggle = true
-    private lateinit var currentTab:Song
-    private lateinit var tabBodyTextView:TextView
+    var defaultTextMeasure = (defaultFontSize * 1.8).toInt()
+
+
 
     inner class ViewPagerViewHolder(val binding: TabItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -72,6 +68,18 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
 
+
+
+
+        defaultFontSize = 12f
+        newFontSize = defaultFontSize
+        defaultTextMeasure = (defaultFontSize * 1.8).toInt()
+
+        val chordFinder = ChordsFinder()
+        var toggle = true
+        val currentTab = tabs[position]
+        val tabBodyTextView = TextView(holder.itemView.context)
+
         // Access views and set data
         holder.tabName.text = currentTab.songName
         holder.tabArtist.text = currentTab.artist
@@ -80,7 +88,7 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
         holder.tabCapo.text = "Capo: ${currentTab.capo}"
         holder.tabDuration.text = "Duration: ${currentTab.minutes}:${currentTab.seconds}"
         holder.tabChords.text = currentTab.songChords.joinToString("  ")
-        holder.editIconTabView.setBackgroundResource(R.drawable.edit_icon_tab_view)
+
 
 
         holder.zoomBtn.setOnClickListener {
@@ -91,12 +99,12 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
         }
 
         holder.zoomInBtn.setOnClickListener {
-            zoomIn(holder)
+            zoomIn(holder, tabBodyTextView, currentTab, chordFinder)
 
         }
 
         holder.zoomOutBtn.setOnClickListener {
-            zoomOut(holder)
+            zoomOut(holder, holder.tabViewLinearLayout, tabBodyTextView, currentTab, chordFinder)
         }
 
         holder.tabViewLinearLayout.setOnClickListener {
@@ -133,7 +141,7 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
             if (toggle){
 
                 holder.automaticScrollButton.background = holder.autoScrollOnBackground
-                triggerAS(holder)
+                triggerAS(holder, currentTab, tabBodyTextView)
             }else{
 
                 holder.automaticScrollButton.setBackgroundResource(R.drawable.zoom_in_out)
@@ -175,7 +183,7 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
             }
 
             alert.setPositiveButton("Ok") { _, _ ->
-                updateTabDuration(updatedMinutes, updatedSeconds, holder.itemView.context)
+                updateTabDuration(updatedMinutes, updatedSeconds, holder.itemView.context, currentTab)
 
             }
 
@@ -190,7 +198,8 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
             true
         }
 
-        buildTabBody(defaultTextMeasure, defaultFontSize, holder)
+        buildTabBody(defaultTextMeasure, defaultFontSize, holder, currentTab, chordFinder, holder.tabViewLinearLayout, tabBodyTextView)
+
 
     }
 
@@ -199,7 +208,7 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
         return tabs.size
     }
 
-    private fun updateTabDuration(minutes:Int, seconds:Int, context: Context){
+    private fun updateTabDuration(minutes:Int, seconds:Int, context: Context, currentTab:Song){
 
         val dbHelper = TabsDBHelper(context)
 
@@ -211,7 +220,7 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
         }
     }
 
-    private fun triggerAS(holder: ViewPagerViewHolder) {
+    private fun triggerAS(holder: ViewPagerViewHolder, currentTab: Song, tabBodyTextView:TextView) {
 
 
         stopAS()
@@ -226,11 +235,8 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
             val heightToScroll = 2
             //height of the tab
             val viewHeight = tabBodyTextView.measuredHeight
-            //accounting for the space above the tab view to have some margin
-            val marginSpace = tabViewLinearLayout?.measuredHeight?.minus(tabBodyTextView.measuredHeight)
             //formula for how often should the intervals be
-            val scrollPeriod = songTime/((viewHeight- marginSpace!!)/heightToScroll)
-
+            val scrollPeriod = songTime/((viewHeight)/heightToScroll)
 
             scrollTimer = object : CountDownTimer(Long.MAX_VALUE, scrollPeriod.toLong()) {
 
@@ -256,7 +262,8 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun zoomIn(holder: ViewPagerViewHolder){
+    private fun zoomIn(holder: ViewPagerViewHolder, tabBodyTextView: TextView, currentTab: Song, chordFinder: ChordsFinder){
+
 
         if (newFontSize<=24f){
             newFontSize += 1f
@@ -264,13 +271,14 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
 
         val newTextMeasure = (newFontSize*1.8).toInt()
 
-        tabViewLinearLayout?.removeView(tabBodyTextView)
-        buildTabBody(newTextMeasure, newFontSize, holder)
+        holder.tabViewLinearLayout.removeView(tabBodyTextView)
+        buildTabBody(newTextMeasure, newFontSize, holder, currentTab, chordFinder, holder.tabViewLinearLayout, tabBodyTextView)
 
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun zoomOut(holder: ViewPagerViewHolder){
+    private fun zoomOut(holder: ViewPagerViewHolder, tabViewLinearLayout: LinearLayout, tabBodyTextView: TextView, currentTab: Song, chordFinder: ChordsFinder){
+
 
         if (newFontSize>=8f){
             newFontSize -= 1f
@@ -278,14 +286,18 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
 
         val newTextMeasure = (newFontSize*1.8).toInt()
 
-        tabViewLinearLayout?.removeView(tabBodyTextView)
-        buildTabBody(newTextMeasure, newFontSize, holder)
+        tabViewLinearLayout.removeView(tabBodyTextView)
+        buildTabBody(newTextMeasure, newFontSize, holder,currentTab,chordFinder, tabViewLinearLayout, tabBodyTextView)
 
     }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun buildTabBody(textSize: Int, fontSize:Float, holder: ViewPagerViewHolder){
+    private fun buildTabBody(textSize: Int, fontSize:Float, holder: ViewPagerViewHolder, currentTab: Song, chordFinder: ChordsFinder,
+                             tabViewLinearLayout: LinearLayout,
+                             tabBodyTextView: TextView
+
+    ){
 
 
         val finalTabBody = SpannableStringBuilder()
@@ -410,10 +422,6 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
                 }
             }
 
-
-            //create text view programmatically
-            tabViewLinearLayout = holder.tabViewLinearLayout
-            tabBodyTextView = TextView(holder.itemView.context)
             tabBodyTextView.id = View.generateViewId()
             tabBodyTextView.layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -424,7 +432,7 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
             tabBodyTextView.textSize = fontSize // Set text size
             tabBodyTextView.typeface = holder.itemView.context.resources.getFont(R.font.cousine) // Set font
 
-            tabViewLinearLayout?.addView(tabBodyTextView)
+            tabViewLinearLayout.addView(tabBodyTextView)
 
         }
 
