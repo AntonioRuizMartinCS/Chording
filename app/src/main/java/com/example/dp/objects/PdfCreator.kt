@@ -71,9 +71,14 @@ class PdfCreator {
         canvas.drawText("Capo: ${tab.capo}", 50F, 170F, songAttributes)
         canvas.drawText("Duration: " + tab.minutes.toString() + ":" + tab.seconds.toString(), 50F, 200F, songAttributes)
 
+        //array de lineas de partitura
         val songLines = tab.songBody.split("\n")
+        //numero de lineas
         val numberOfLines = songLines.size
+        //numero de lineas que caben en la primera pagina
         val numberOfLinesOn1stPage = 29
+
+        //numero de lineas que caben en pagina nueva
         val numberOfLinesOnNewPage = 36
         val pagesNeeded = ceil((((numberOfLines * 30) - 880) / 1090).toDouble()).toInt() + 1
 
@@ -86,6 +91,7 @@ class PdfCreator {
 
         pdfDocument.finishPage(myPage)
 
+        //si necesita una pagina
        if (pagesNeeded == 1){
 
            val newPage = pdfDocument.startPage(myPageInfo)
@@ -100,6 +106,8 @@ class PdfCreator {
 
        }
 
+
+        //si necesita dos paginas nuevas
         if (pagesNeeded == 2){
 
             val newPage = pdfDocument.startPage(myPageInfo)

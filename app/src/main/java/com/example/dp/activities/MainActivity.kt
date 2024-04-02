@@ -4,13 +4,16 @@ package com.example.dp.activities
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +35,9 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
     private lateinit var mySetsList:ArrayList<com.example.dp.objects.Set>
     private lateinit var searchView:SearchView
     private lateinit var tabsAdapter:TabsRVAdapter
+    private lateinit var sharedPreferences:SharedPreferences
+
+
 
 
 
@@ -42,6 +48,8 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+
 
         //launch test activity
 //        Intent(this, ActivityTest::class.java).also {
@@ -57,6 +65,21 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
         createRecyclersView()
         createButtons()
         createTransition(binding.myTabsLabel)
+
+        sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+
+        applySharedPrefs()
+
+    }
+
+    private fun applySharedPrefs() {
+        val darkMode = sharedPreferences.getBoolean("darkMode", false)
+
+        if (darkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
     override fun onRestart() {
@@ -390,7 +413,6 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
             }
 
         }
-
     }
 
 
