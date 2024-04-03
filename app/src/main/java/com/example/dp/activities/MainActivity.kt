@@ -310,15 +310,7 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
         Intent(this, TabActivity::class.java).also {
 
             it.putExtra("EXTRA_SONG_ID", myTabsList[position].id)
-            it.putExtra("EXTRA_SONG_NAME", myTabsList[position].songName)
-            it.putExtra("EXTRA_SONG_ARTIST", myTabsList[position].artist)
-            it.putExtra("EXTRA_SONG_BODY", myTabsList[position].songBody)
-            it.putExtra("EXTRA_SONG_CAPO", myTabsList[position].capo)
-            it.putExtra("EXTRA_SONG_TUNING", myTabsList[position].tuning)
-            it.putExtra("EXTRA_SONG_KEY", myTabsList[position].key)
-            it.putExtra("EXTRA_SONG_CHORDS", myTabsList[position].songChords)
-            it.putExtra("EXTRA_MINUTES", myTabsList[position].minutes)
-            it.putExtra("EXTRA_SECONDS", myTabsList[position].seconds)
+            it.putExtra("EXTRA_SONGS", myTabsList)
 
             startActivity(it)
         }

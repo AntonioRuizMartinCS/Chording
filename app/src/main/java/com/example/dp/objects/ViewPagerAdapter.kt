@@ -17,10 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.NumberPicker
-import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +25,6 @@ import com.example.dp.R
 import com.example.dp.activities.BottomSheet
 import com.example.dp.activities.EditTabActivity
 import com.example.dp.databinding.TabItemBinding
-
 
 
 class ViewPagerAdapter(
@@ -225,10 +221,7 @@ class ViewPagerAdapter(
 
         dbHelper.updateTable(currentTab.id, currentTab.songName, currentTab.artist, currentTab.songBody, currentTab.capo, currentTab.tuning, currentTab.key, currentTab.songChords.joinToString(" "), minutes, seconds)
 
-        if (context is Activity){
 
-            context.recreate()
-        }
     }
 
     private fun triggerAS(holder: ViewPagerViewHolder, currentTab: Song) {

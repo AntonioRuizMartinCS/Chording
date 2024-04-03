@@ -79,16 +79,8 @@ class SetActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tabs
     override fun onItemClick(position: Int) {
         Intent(this, TabActivity::class.java).also {
 
+            it.putExtra("EXTRA_SONGS", tabsForSet)
             it.putExtra("EXTRA_SONG_ID", tabsForSet[position].id)
-            it.putExtra("EXTRA_SONG_NAME", tabsForSet[position].songName)
-            it.putExtra("EXTRA_SONG_ARTIST", tabsForSet[position].artist)
-            it.putExtra("EXTRA_SONG_BODY", tabsForSet[position].songBody)
-            it.putExtra("EXTRA_SONG_CAPO", tabsForSet[position].capo)
-            it.putExtra("EXTRA_SONG_TUNING", tabsForSet[position].tuning)
-            it.putExtra("EXTRA_SONG_KEY", tabsForSet[position].key)
-            it.putExtra("EXTRA_SONG_CHORDS", tabsForSet[position].songChords)
-            it.putExtra("EXTRA_MINUTES", tabsForSet[position].minutes)
-            it.putExtra("EXTRA_SECONDS", tabsForSet[position].seconds)
 
             startActivity(it)
         }

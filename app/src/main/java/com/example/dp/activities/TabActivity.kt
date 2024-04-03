@@ -1,41 +1,21 @@
 package com.example.dp.activities
 
-
-import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.DialogInterface
-import android.content.Intent
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.StyleSpan
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.widget.LinearLayout
-import android.widget.NumberPicker
-import android.widget.ScrollView
-import android.widget.TextView
-import android.widget.Toolbar
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import com.example.dp.R
 import com.example.dp.databinding.ActivityTabBinding
-import com.example.dp.objects.ChordsFinder
 import com.example.dp.objects.Song
 import com.example.dp.objects.TabsDBHelper
 import com.example.dp.objects.ViewPagerAdapter
+import java.util.ArrayList
 
 
 class TabActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTabBinding
-    private lateinit var tab: Song
     private var dbHelper = TabsDBHelper(this)
+
 
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -44,15 +24,35 @@ class TabActivity : AppCompatActivity() {
         binding = ActivityTabBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        val tabs = dbHelper.allTabs
 
-        tab = tabs[0]
 
-        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager,tabs )
+        val tabs = intent.getSerializableExtra("EXTRA_SONGS") as java.util.ArrayList<Song>
+        val tabID = intent.getIntExtra("EXTRA_SONG_ID", 0)
+        var tabPosition = 0
 
+        tabPosition = findTabPosition(tabs, tabID, tabPosition)
+
+
+        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, tabs)
         val viewPager = binding.tabsViewPager
         viewPager.adapter = viewPagerAdapter
 
+        if (tabPosition >= 0){viewPager.currentItem = tabPosition}
+
+    }
+
+    private fun findTabPosition(
+        tabs: ArrayList<Song>,
+        tabID: Int,
+        tabPosition: Int
+    ): Int {
+        var tabPosition1 = tabPosition
+        for (i in 0 until tabs.size) {
+            if (tabs[i].id == tabID) {
+                tabPosition1 = i
+            }
+        }
+        return tabPosition1
     }
 }
 

@@ -418,6 +418,7 @@ public class TabsDBHelper extends SQLiteOpenHelper {
     }
 
 
+
     public Song getOneTab(int songID) {
 
         Song song = null;
@@ -459,7 +460,6 @@ public class TabsDBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return song;
-
     }
 
     public void updateTable(int id, String newSongName, String newArtistName,
