@@ -48,17 +48,11 @@ class TabActivity : AppCompatActivity() {
 
         tab = tabs[0]
 
-        val viewPagerAdapter = ViewPagerAdapter(tabs)
+        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager,tabs )
 
         val viewPager = binding.tabsViewPager
         viewPager.adapter = viewPagerAdapter
 
-
-
     }
-
-
-
-
 }
 

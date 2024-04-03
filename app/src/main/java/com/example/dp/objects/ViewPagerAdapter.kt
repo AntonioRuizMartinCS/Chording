@@ -20,15 +20,20 @@ import android.widget.NumberPicker
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dp.R
+import com.example.dp.activities.BottomSheet
 import com.example.dp.activities.EditTabActivity
 import com.example.dp.databinding.TabItemBinding
 
 
 
-class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
+class ViewPagerAdapter(
+    private val fragmentManager: FragmentManager,
+    private val tabs: ArrayList<Song>) :
     RecyclerView.Adapter<ViewPagerAdapter.ViewPagerViewHolder>() {
 
     private var scrollTimer:CountDownTimer? = null
@@ -56,6 +61,7 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
         val autoScrollOnBackground = ContextCompat.getDrawable(binding.root.context, R.drawable.a_s_on)
         val scrollView = binding.tabScreenScrollView
         val tabBodyTextView = binding.tabBodyTextView
+        val moreBtn = binding.moreTabMenu
 
     }
 
@@ -77,7 +83,7 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
         val chordFinder = ChordsFinder()
         var toggle = true
         val currentTab = tabs[position]
-        val tabBodyTextView = holder.tabBodyTextView
+
 
         // Access views and set data
         holder.tabName.text = currentTab.songName
@@ -102,6 +108,13 @@ class ViewPagerAdapter(private val tabs: ArrayList<Song>) :
 
         holder.zoomOutBtn.setOnClickListener {
             zoomOut(holder, holder.tabViewLinearLayout, currentTab, chordFinder)
+        }
+
+        holder.moreBtn.setOnClickListener {
+
+            BottomSheet(currentTab).show(fragmentManager, "newTaskTag")
+
+
         }
 
         holder.tabViewLinearLayout.setOnClickListener {

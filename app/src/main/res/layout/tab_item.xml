@@ -48,10 +48,9 @@
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/moreTabMenu"
                     android:foreground="?android:attr/selectableItemBackground"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/more_btn_background"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -61,9 +60,9 @@
                     app:layout_constraintVertical_bias="0.5" >
 
                     <ImageButton
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/moreTabMenu"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:background="@drawable/baseline_more_horiz_24"
                         android:contentDescription="@string/todo"
                         app:layout_constraintBottom_toBottomOf="parent"

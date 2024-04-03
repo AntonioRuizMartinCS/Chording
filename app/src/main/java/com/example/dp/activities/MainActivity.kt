@@ -38,11 +38,6 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
     private lateinit var sharedPreferences:SharedPreferences
 
 
-
-
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
