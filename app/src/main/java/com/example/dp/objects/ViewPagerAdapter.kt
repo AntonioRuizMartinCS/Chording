@@ -27,6 +27,8 @@ import com.example.dp.activities.EditTabActivity
 import com.example.dp.databinding.TabItemBinding
 
 
+
+
 class ViewPagerAdapter(
     private val fragmentManager: FragmentManager,
     private val tabs: ArrayList<Song>) :
@@ -38,7 +40,7 @@ class ViewPagerAdapter(
     var defaultTextMeasure = (defaultFontSize * 1.8).toInt()
 
 
-    inner class ViewPagerViewHolder(val binding: TabItemBinding) :
+    inner class ViewPagerViewHolder(val binding: com.example.dp.databinding.TabItemBinding ) :
         RecyclerView.ViewHolder(binding.root) {
 
         val tabName= binding.tabName
@@ -71,6 +73,8 @@ class ViewPagerAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
 
+        val dbHelper = TabsDBHelper(holder.itemView.context)
+
         defaultFontSize = 12f
         newFontSize = defaultFontSize
         defaultTextMeasure = (defaultFontSize * 1.8).toInt()
@@ -78,8 +82,9 @@ class ViewPagerAdapter(
 
         val chordFinder = ChordsFinder()
         var toggle = true
-        val currentTab = tabs[position]
-
+        var currentTab = tabs[position]
+        val currentTabID = currentTab.id
+        currentTab = dbHelper.getOneTab(currentTabID)
 
         // Access views and set data
         holder.tabName.text = currentTab.songName
@@ -203,8 +208,6 @@ class ViewPagerAdapter(
 
             true
         }
-
-
                     buildTabBody(defaultTextMeasure, defaultFontSize, holder, currentTab, chordFinder)
 
     }
@@ -221,6 +224,9 @@ class ViewPagerAdapter(
 
         dbHelper.updateTable(currentTab.id, currentTab.songName, currentTab.artist, currentTab.songBody, currentTab.capo, currentTab.tuning, currentTab.key, currentTab.songChords.joinToString(" "), minutes, seconds)
 
+        if (context is Activity) {
+            (context).recreate()
+        }
 
     }
 

@@ -18,7 +18,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 
 class EditTabActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityEditTabBinding
+    private lateinit var binding: com.example.dp.databinding.ActivityEditTabBinding
     private lateinit var tab: Song
     var capo = ""
     var tuning = ""
