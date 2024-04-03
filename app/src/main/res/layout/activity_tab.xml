@@ -4,52 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/tabScreenToolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="?attr/actionBarTheme"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/tabOptionsMenu"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:layout_marginEnd="8dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:layout_constraintBottom_toBottomOf="@+id/tabScreenToolbar"
-                app:layout_constraintEnd_toEndOf="@+id/tabScreenToolbar"
-                app:layout_constraintHorizontal_bias="0.90"
-                app:layout_constraintTop_toTopOf="@+id/tabScreenToolbar"
-                android:background="@drawable/baseline_more_horiz_24"
-                android:contentDescription="@string/todo" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/tabsViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

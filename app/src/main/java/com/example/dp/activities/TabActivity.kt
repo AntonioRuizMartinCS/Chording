@@ -55,10 +55,6 @@ class TabActivity : AppCompatActivity() {
 
 
 
-        val toolbar:androidx.appcompat.widget.Toolbar = binding.tabScreenToolbar
-        setSupportActionBar(toolbar)
-
-
     }
 
 
