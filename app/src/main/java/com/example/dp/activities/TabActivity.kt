@@ -14,7 +14,6 @@ import java.util.ArrayList
 class TabActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTabBinding
-    private var dbHelper = TabsDBHelper(this)
 
 
 

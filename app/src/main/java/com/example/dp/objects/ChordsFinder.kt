@@ -2,6 +2,7 @@ package com.example.dp.objects
 
 class ChordsFinder {
 
+
     private val chordPattern = Regex("[A-G](?:#|b|Cb|Db|Eb|Fb|Gb|Ab|Bb)?(?:m|maj|maj7|sus4|sus2|dim|aug|add9|6|7|9|11|13)?(?:m|maj|maj7|sus4|sus2|dim|aug|add9|6|7|9|11|13)?(?:/[A-G](?:#|b|Db|Eb|Fb|Gb|Ab|Bb|Cb)?)?(?:\\([^)]*\\))?")
 
 
@@ -9,16 +10,20 @@ class ChordsFinder {
         val chords = arrayListOf<String>()
 
 
+        //loop through each line of the song
         for (chordLine in chordsLines) {
+            //find matches with the chordPatter RE
             val matches = chordPattern.findAll(chordLine)
 
+            //find start and end indexes of each match inside the line
             for (match in matches) {
                 val matchStart = match.range.first
                 val matchEnd = match.range.last
                 val lineLength = chordLine.length
 
-
+                //if its a single chord line
                 val isSingleChordLine = matchEnd - matchStart == lineLength - 1
+
 
                 if (isSingleChordLine || (matchStart == 0 && chordLine.getOrNull(matchEnd + 1)?.isWhitespace() == true) ||
                     (matchEnd == lineLength - 1 && chordLine.getOrNull(matchStart - 1)?.isWhitespace() == true) ||

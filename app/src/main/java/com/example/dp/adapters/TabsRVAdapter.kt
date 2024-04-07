@@ -114,6 +114,7 @@ class TabsRVAdapter(
 
         val popupMenu = PopupMenu(view.context, view)
 
+        //create different pop up menu depending on the activity
         when(context){
 
             is MainActivity ->  popupMenu.menuInflater.inflate(R.menu.tab_context_menu, popupMenu.menu)

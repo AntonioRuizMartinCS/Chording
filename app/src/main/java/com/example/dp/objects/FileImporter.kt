@@ -48,10 +48,11 @@ class FileImporter(
 
         for (importedSongLine in importedSongLines){
 
+            //find the line that indicated duration
             if (importedSongLine.contains("duration", ignoreCase = true)) {
 
-                seconds =
-                    importedSongLine.substring(importedSongLine.lastIndexOf(":") + 1).trim().toInt()
+                //finding the value inside the line
+                seconds = importedSongLine.substring(importedSongLine.lastIndexOf(":") + 1).trim().toInt()
             }
         }
         return seconds
