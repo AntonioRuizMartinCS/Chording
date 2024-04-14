@@ -303,17 +303,16 @@
             tools:ignore="RtlSymmetry" />
 
 
-
         <EditText
             android:id="@+id/songBody"
             android:layout_width="match_parent"
             android:layout_height="290dp"
             android:layout_margin="2dp"
+            android:background="@drawable/less_rounded_corners"
             android:ems="6"
             android:fontFamily="@font/cousine"
             android:gravity="start|top"
             android:inputType="textMultiLine"
-            android:background="@drawable/less_rounded_corners"
             android:padding="5dp"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -321,8 +320,22 @@
             app:layout_constraintHorizontal_bias="0.384"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.307" />
+            app:layout_constraintVertical_bias="0.3" />
 
+
+        <ImageButton
+            android:id="@+id/pasteIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/baseline_content_paste_go_24"
+            android:contentDescription="@string/todo"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.878"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.025" />
 
         <Button
             android:id="@+id/saveBtn"

@@ -1,5 +1,7 @@
 package com.example.dp.activities
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -180,7 +182,27 @@ class UploadActivity : AppCompatActivity() {
                 openFile()
 
             }
+
+            val pasteButton = binding.pasteIcon
+            pasteButton.setOnClickListener {
+
+                binding.songBody.setText(paste())
+
+            }
     }
+
+
+    private fun paste(): String{
+        var clip = ""
+        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+
+        clip = clipboard.primaryClip?.getItemAt(0)?.coerceToText(this).toString()
+
+        return clip
+    }
+
+
+
 
 //    https://developer.android.com/training/data-storage/shared/documents-files#open-file
     @RequiresApi(Build.VERSION_CODES.Q)
