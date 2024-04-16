@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.NumberPicker
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dp.R
 import com.example.dp.activities.BottomSheet
 import com.example.dp.activities.EditTabActivity
+import com.example.dp.activities.HelpFragment
 import com.example.dp.databinding.TabItemBinding
 
 
@@ -37,7 +39,7 @@ class ViewPagerAdapter(
     private var scrollTimer:CountDownTimer? = null
     private var defaultFontSize = 12F
     private var newFontSize = defaultFontSize
-    var defaultTextMeasure = (defaultFontSize * 1.8).toInt()
+    private var defaultTextMeasure = (defaultFontSize * 1.8).toInt()
 
 
     inner class ViewPagerViewHolder(val binding: com.example.dp.databinding.TabItemBinding ) :
@@ -60,6 +62,7 @@ class ViewPagerAdapter(
         val scrollView = binding.tabScreenScrollView
         val tabBodyTextView = binding.tabBodyTextView
         val moreBtn = binding.moreTabMenu
+        val helpBtn = binding.helpBtn
 
     }
 
@@ -114,8 +117,10 @@ class ViewPagerAdapter(
         holder.moreBtn.setOnClickListener {
 
             BottomSheet(currentTab).show(fragmentManager, "newTaskTag")
+        }
 
-
+        holder.helpBtn.setOnClickListener {
+            HelpFragment().show(fragmentManager, "helpTaskTag")
         }
 
         holder.tabViewLinearLayout.setOnClickListener {

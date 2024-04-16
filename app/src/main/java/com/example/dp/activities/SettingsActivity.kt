@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Switch
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.dp.databinding.ActivitySettingsBinding
 
@@ -48,6 +49,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun createActivityViews(sharedPreferences: SharedPreferences) {
 
         val copyrightBtn = binding.copyrightScreenBtn
+        val aboutBtn = binding.aboutBtn
 
         copyrightBtn.setOnClickListener {
 
@@ -72,6 +74,14 @@ class SettingsActivity : AppCompatActivity() {
             }
 
         }
+
+        aboutBtn.setOnClickListener {
+
+            Intent(this, AboutActivity::class.java).also {
+                startActivity(it)
+            }
+        }
+
     }
 
     private fun getSharedPrefs(sharedPreferences: SharedPreferences){

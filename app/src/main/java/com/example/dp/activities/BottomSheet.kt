@@ -1,7 +1,5 @@
 package com.example.dp.activities
 
-
-import android.content.ClipData
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -82,8 +80,6 @@ class BottomSheet(private val tab:Song) : BottomSheetDialogFragment() {
             val pdfCreator = PdfCreator()
             context?.let { it1 -> pdfCreator.generatePDF(it1, tab) }
 
-
-
         }
     }
 
@@ -128,9 +124,6 @@ class BottomSheet(private val tab:Song) : BottomSheetDialogFragment() {
 
 
     }
-
-
-
 
 
 }

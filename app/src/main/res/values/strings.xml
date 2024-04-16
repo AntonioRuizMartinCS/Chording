@@ -130,6 +130,19 @@
     <string name="accept">Accept</string>
     <string name="i_confirm_that_i_have_read_the_copyright_information">I confirm that I have read the copyright information</string>
     <string name="dark_mode">Dark mode</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="press_the_zoom_in_button_to_access_the_zoom_in_or_zoom_out_menu">Press the zoom in button to access the zoom in or zoom out menu</string>
+    <string name="press_the_auto_scroll_button_to_activate_automatic_scroll">Press the auto scroll button to activate automatic scroll</string>
+    <string name="swipe_left_to_jump_to_the_previous_song">Swipe left to jump to the previous song</string>
+    <string name="swipe_right_to_jump_to_the_next_song">Swipe right to jump to the next song</string>
+    <string name="press_the_edit_button_to_edit_the_current_tab">Press the edit button to edit the current tab</string>
+    <string name="keep_the_auto_scroll_button_pressed_to_adjust_the_duration_of_the_song_if_the_song_duration_is_made_longer_the_automatic_scroll_will_be_slower_if_it_is_made_shorter_the_automatic_scroll_will_be_faster">Keep the auto scroll button pressed to adjust the duration of the song. If the song duration is made longer, the automatic scroll will be slower. If it is made shorter, the automatic scroll will be faster.</string>
+    <string name="about">About</string>
+    <string name="app_developed_by">App developed by:</string>
+    <string name="antonio_ruiz_martin">Antonio Ruiz Martin</string>
+    <string
+        name="messageWithLink"><a href="https://www.linkedin.com/in/antonio-ruiz-martin-b4b06929b/">Antonio Ruiz Martin</a></string>
 
 
 </resources>
