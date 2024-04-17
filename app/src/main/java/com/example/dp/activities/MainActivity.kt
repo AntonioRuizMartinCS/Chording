@@ -155,7 +155,7 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
         if (binding.setsRecyclerView.visibility == View.VISIBLE) {
             addBtn.setOnClickListener {
                 val alert: AlertDialog.Builder = AlertDialog.Builder(this)
-                alert.setTitle("add set name")
+                alert.setTitle("Add set name")
 
                 val input = EditText(this)
                 alert.setView(input)

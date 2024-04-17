@@ -71,14 +71,14 @@ class PdfCreator {
         canvas.drawText("Capo: ${tab.capo}", 50F, 170F, songAttributes)
         canvas.drawText("Duration: " + tab.minutes.toString() + ":" + tab.seconds.toString(), 50F, 200F, songAttributes)
 
-        //array de lineas de partitura
+
         val songLines = tab.songBody.split("\n")
-        //numero de lineas
+
         val numberOfLines = songLines.size
-        //numero de lineas que caben en la primera pagina
+
         val numberOfLinesOn1stPage = 29
 
-        //numero de lineas que caben en pagina nueva
+
         val numberOfLinesOnNewPage = 36
         val pagesNeeded = ceil((((numberOfLines * 30) - 880) / 1090).toDouble()).toInt() + 1
 
@@ -91,14 +91,14 @@ class PdfCreator {
 
         pdfDocument.finishPage(myPage)
 
-        //si necesita una pagina
+
        if (pagesNeeded == 1){
 
            val newPage = pdfDocument.startPage(myPageInfo)
            val newCanvas = newPage.canvas
            z = 30F
 
-           for (i in numberOfLinesOn1stPage +1.. numberOfLines){
+           for (i in numberOfLinesOn1stPage +1..< numberOfLines){
                newCanvas.drawText(songLines[i], 50F, z, body)
                z += 30F
            }
@@ -107,7 +107,6 @@ class PdfCreator {
        }
 
 
-        //si necesita dos paginas nuevas
         if (pagesNeeded == 2){
 
             val newPage = pdfDocument.startPage(myPageInfo)
@@ -141,8 +140,6 @@ class PdfCreator {
 
             pdfDocument.writeTo(FileOutputStream(file))
 
-            // on below line we are displaying a toast message as PDF file generated..
-            Toast.makeText(context, "PDF file generated..", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             // below line is used
             // to handle error

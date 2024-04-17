@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DP</string>
+    <string name="app_name">Chording</string>
     <string name="import_a_song">Import a song</string>
     <string name="advanced">Advanced</string>
     <string name="artist_name">Artist name</string>
@@ -10,8 +10,7 @@
     <string name="save">Save</string>
     <string name="tuning">Tuning</string>
     <string name="key">Key</string>
-    <string name="john_lennon">John Lennon
-</string>
+    <string name="john_lennon">John Lennon</string>
     <string name="savedTabs">Saved Tabs:</string>
     <string name="my_tabs">My tabs</string>
     <string name="my_sets">My sets</string>
@@ -25,10 +24,10 @@
     <string name="duration">Duration</string>
     <string name="twoDots">:</string>
     <string name="imagine">Imagine</string>
-    <string name="add_set">add set</string>
+    <string name="add_set">Add set</string>
     <string name="add_song">Add song</string>
     <string name="add_to_set">Add to set</string>
-    <string name="remove_from_set">remove from set</string>
+    <string name="remove_from_set">Remove from set</string>
     <string name="zoom_in_and_out_button">zoom in and out button</string>
     <string name="automatic_scroll_button">automatic scroll button</string>
 

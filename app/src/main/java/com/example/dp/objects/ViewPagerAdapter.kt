@@ -387,7 +387,7 @@ class ViewPagerAdapter(
                     }
 
                     //if current line is chords and next line is lyrics
-                    if (currentLineIsChords && !nextLineIsChords){
+                    if (currentLineIsChords && !nextLineIsChords && songLines[i+1].isNotBlank()){
 
                         //if lyrics line fits
                         if (doesLineFit(characterCapacity, songLines[i+1].length)){
@@ -398,7 +398,7 @@ class ViewPagerAdapter(
 
                             val boldSpan1 = StyleSpan(Typeface.BOLD)
 
-                            finalTabBody.setSpan(boldSpan1, finalTabBody.length - ((currentLine.substring(0, breakInLine).length)), finalTabBody.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+                            finalTabBody.setSpan(boldSpan1, finalTabBody.length - ((currentLine.substring(0, breakInLine).length))-1, finalTabBody.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
 
                             finalTabBody.append(songLines[i+1] + "\n")
 
@@ -415,8 +415,16 @@ class ViewPagerAdapter(
                         }else{
 
                             finalTabBody.append((currentLine.substring(0, findSpaceBeforeEnd(characterCapacity, currentLine)))+ "\n")
+                            val boldSpan1 = StyleSpan(Typeface.BOLD)
+                            finalTabBody.setSpan(boldSpan1, finalTabBody.length - ((currentLine.substring(0, findSpaceBeforeEnd(characterCapacity, currentLine)).length))-1, finalTabBody.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+
+
                             finalTabBody.append((songLines[i+1].substring(0, findSpaceBeforeEnd(characterCapacity, songLines[i+1])))+ "\n")
                             finalTabBody.append((currentLine.substring(findSpaceBeforeEnd(characterCapacity, currentLine), currentLine.length))+ "\n")
+                            val boldSpan2 = StyleSpan(Typeface.BOLD)
+                            finalTabBody.setSpan(boldSpan2, finalTabBody.length - (currentLine.substring(findSpaceBeforeEnd(characterCapacity, currentLine)).length)-1, finalTabBody.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+
+
                             finalTabBody.append((songLines[i+1].substring(findSpaceBeforeEnd(characterCapacity, songLines[i+1]), songLines[i+1].length))+ "\n")
 
                         }
