@@ -21,14 +21,4 @@ class AboutActivity : AppCompatActivity() {
         }
 
 
-    private fun createActivityViews(){
-
-
-
-
-
-
-    }
-
-
     }

@@ -25,18 +25,21 @@ class ChordsFinder {
                 val isSingleChordLine = matchEnd - matchStart == lineLength - 1
 
 
+                //if its a single chords line, chord is at the beginning of line, end of line or surrounded by whitespace, its a chord
                 if (isSingleChordLine || (matchStart == 0 && chordLine.getOrNull(matchEnd + 1)?.isWhitespace() == true) ||
                     (matchEnd == lineLength - 1 && chordLine.getOrNull(matchStart - 1)?.isWhitespace() == true) ||
                     (matchStart > 0 && matchEnd < lineLength - 1 &&
                             chordLine.getOrNull(matchStart - 1)?.isWhitespace() == true &&
                             chordLine.getOrNull(matchEnd + 1)?.isWhitespace() == true)
                 ) {
+                    //add the chord the chords array only if its not already present
                     if (!chords.contains(match.value)) {
                         chords.add(match.value)
                     }
                 }
             }
         }
+        //return all identified chords
         return chords
     }
 
