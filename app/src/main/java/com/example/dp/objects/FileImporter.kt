@@ -3,8 +3,6 @@ package com.example.dp.objects
 class FileImporter(
 ) {
 
-//    https://kotlinandroid.org/kotlin/kotlin-find-index-of-substring-in-a-string/
-
     fun findSongName(importedSongLines: ArrayList<String>): String {
 
         return importedSongLines[0]

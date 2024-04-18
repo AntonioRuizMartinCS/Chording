@@ -135,22 +135,21 @@ class PdfCreator {
         val file = File(context.filesDir, "${tab.songName}.pdf")
 
         try {
-            // after creating a file name we will
-            // write our PDF file to that location.
+
 
             pdfDocument.writeTo(FileOutputStream(file))
 
         } catch (e: Exception) {
-            // below line is used
-            // to handle error
+
+
             e.printStackTrace()
 
-            // on below line we are displaying a toast message as fail to generate PDF
+
             Toast.makeText(context, "Fail to generate PDF file..", Toast.LENGTH_SHORT)
                 .show()
         }
-        // after storing our pdf to that
-        // location we are closing our PDF file.
+
+
         pdfDocument.close()
 
             val printManager = context.getSystemService(Context.PRINT_SERVICE) as PrintManager

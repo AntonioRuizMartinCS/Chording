@@ -15,6 +15,7 @@ import com.example.dp.objects.Song;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
 public class TabsDBHelper extends SQLiteOpenHelper {
 
     public static final String TAB_TABLE = "TAB_TABLE";
@@ -147,9 +148,7 @@ public class TabsDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String queryString = "DELETE FROM " + SONG_SETS_TABLE + " WHERE " + COLUMN_SONG_ID + " = " + songID;
 
-
         db.execSQL(queryString);
-
 
         return false;
 

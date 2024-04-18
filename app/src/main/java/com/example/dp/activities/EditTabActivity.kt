@@ -95,7 +95,6 @@ class EditTabActivity : AppCompatActivity() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             capoSpinner.adapter = adapter
 
-            //    https://stackoverflow.com/questions/10634180/how-to-set-spinner-default-by-its-value-instead-of-position
             capoSpinner.setSelection(adapter.getPosition(tab.capo))
 
         }

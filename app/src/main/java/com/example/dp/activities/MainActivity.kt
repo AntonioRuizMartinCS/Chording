@@ -46,15 +46,8 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
 
 
 
-        //launch test activity
-//        Intent(this, ActivityTest::class.java).also {
-//            startActivity(it)
-//        }
-
-
         tabsDBHelper = TabsDBHelper(this)
 
-//        tabsDBHelper.deleteTables()
 
         sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
         applySharedPrefs()
@@ -91,16 +84,23 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
     }
 
 
-    //    https://stackoverflow.com/questions/2614545/animate-change-of-view-background-color-on-android
+
     private fun createTransition(view: TextView){
+
+        //code adapted from Idolize, 2020
 
         val transition = view.background as? TransitionDrawable
         transition?.startTransition(500)
+
+        //end of adapted code
     }
 
+
     private fun resetTransition(view: TextView){
+        //code adapted from Idolize, 2020
         val transitionDrawable = ContextCompat.getDrawable(this, R.drawable.bottom_line_transition)
         view.background = transitionDrawable
+        //end of adapted code
     }
 
 
@@ -151,7 +151,6 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
     private fun updateAddButtonClickListener() {
         val addBtn = binding.addBtn
 
-//        https://stackoverflow.com/questions/4134117/edittext-on-a-popup-window
         if (binding.setsRecyclerView.visibility == View.VISIBLE) {
             addBtn.setOnClickListener {
                 val alert: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -282,8 +281,11 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
 
     }
 
-//    https://www.geeksforgeeks.org/android-searchview-with-recyclerview-using-kotlin/
+
     private fun filter(text: String) {
+
+        //code adapted from geeksforgeeks, 2022
+
         // creating a new array list to filter our data.
         val filteredList: ArrayList<TabsViewModel> = ArrayList()
 
@@ -298,6 +300,8 @@ class MainActivity : AppCompatActivity(), TabsRVAdapter.OnItemClickListener, Tab
         }
 
             tabsAdapter.filterList(filteredList)
+
+        //end of adapted code
 
     }
 

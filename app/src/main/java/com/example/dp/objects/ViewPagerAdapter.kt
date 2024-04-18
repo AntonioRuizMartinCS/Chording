@@ -29,7 +29,7 @@ import com.example.dp.activities.HelpFragment
 import com.example.dp.databinding.TabItemBinding
 
 
-
+//code adapted from Lackner P. 2020
 
 class ViewPagerAdapter(
     private val fragmentManager: FragmentManager,
@@ -466,3 +466,4 @@ class ViewPagerAdapter(
     }
 
 }
+//end of adapted code

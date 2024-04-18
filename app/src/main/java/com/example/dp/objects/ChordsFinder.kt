@@ -2,9 +2,11 @@ package com.example.dp.objects
 
 class ChordsFinder {
 
+    //code adapted from nadunindunil, 2024
 
     private val chordPattern = Regex("[A-G](?:#|b|Cb|Db|Eb|Fb|Gb|Ab|Bb)?(?:m|maj|maj7|sus4|sus2|dim|aug|add9|6|7|9|11|13)?(?:m|maj|maj7|sus4|sus2|dim|aug|add9|6|7|9|11|13)?(?:/[A-G](?:#|b|Db|Eb|Fb|Gb|Ab|Bb|Cb)?)?(?:\\([^)]*\\))?")
 
+    //end of adapted code
 
     fun findChords(chordsLines: List<String>): ArrayList<String> {
         val chords = arrayListOf<String>()

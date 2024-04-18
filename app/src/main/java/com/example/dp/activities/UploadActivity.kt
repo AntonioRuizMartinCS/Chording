@@ -65,7 +65,6 @@ class UploadActivity : AppCompatActivity() {
             binding.numberOfTabs.text = dbHelper.allTabs.size.toString()
 
 
-//            https://medium.com/@sc71/android-numberpickers-3ef535c45487
             minutesPicker.minValue = 0
             minutesPicker.maxValue = 60
 
@@ -204,7 +203,7 @@ class UploadActivity : AppCompatActivity() {
 
 
 
-//    https://developer.android.com/training/data-storage/shared/documents-files#open-file
+    //code adapted from Android Documentation
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun openFile(){
         val pickFileRequestCode = 1
@@ -214,7 +213,10 @@ class UploadActivity : AppCompatActivity() {
         startActivityForResult(intent, pickFileRequestCode)
     }
 
+    //end of adapted code
 
+
+    //code adapted from Android Documentation
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(
         requestCode: Int, resultCode: Int, resultData: Intent?) {
@@ -239,7 +241,9 @@ class UploadActivity : AppCompatActivity() {
             }
         }
     }
+    //end of adapted code
 
+    //code adapted from Android Documentation
     @Throws(IOException::class)
     private fun readTextFromUri(uri: Uri): ArrayList<String> {
 
@@ -257,6 +261,7 @@ class UploadActivity : AppCompatActivity() {
         }
         return importedSongLines
     }
+    //end of adapted code
 
 
     private fun uploadSong(){
@@ -278,7 +283,8 @@ class UploadActivity : AppCompatActivity() {
         val dbHelper = TabsDBHelper(this)
 
 
-        //checks if the copyright information has been acknowledge by the user
+        //checks if the copyright information has been acknowledged by the user
+
         //if hasn't been:
         if (dbHelper.acknowledgement == 0){
 

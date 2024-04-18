@@ -11,7 +11,7 @@ import android.print.PrintDocumentInfo
 import android.util.Log
 import java.io.*
 
-
+//code adapted from bambura harshita, 2022
 class PdfDocumentAdapter(var context: Context, var path: String) :
     PrintDocumentAdapter() {
     override fun onLayout(
@@ -75,3 +75,5 @@ class PdfDocumentAdapter(var context: Context, var path: String) :
 
 
 }
+
+//end of adapted code

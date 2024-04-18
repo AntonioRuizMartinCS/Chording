@@ -45,9 +45,7 @@
         <activity
             android:name=".activities.AddSongsToSetActivity"
             android:exported="false" />
-        <activity
-            android:name=".activities.ActivityTest"
-            android:exported="false" />
+
         <activity
             android:name=".activities.EditTabActivity"
             android:exported="false" />

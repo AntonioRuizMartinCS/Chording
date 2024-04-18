@@ -13,6 +13,9 @@ import com.example.dp.R
 import com.example.dp.models.SetsViewModel
 
 
+//code adapted from geeksforgeeks, 2021
+
+
 class SetsRVAdapter(
     private val mList: List<SetsViewModel>,
     private val listener: OnItemClickListener,
@@ -110,3 +113,5 @@ class SetsRVAdapter(
         popupMenu.show()
     }
 }
+
+//end of adapted code

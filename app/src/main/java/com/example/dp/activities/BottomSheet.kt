@@ -15,21 +15,24 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.io.File
 import java.io.FileOutputStream
 
-//https://www.youtube.com/watch?v=RzjCMa4GBD4
+    //code adapted from Code with Cal, 2023
 class BottomSheet(private val tab:Song) : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentBottomSheetBinding
+
+    //end of adapted code
 
     //declare the path for the file to share in the global scope
     var path: File? = null
 
 
 
-//    https://nphausg.medium.com/android-fileuriexposedexception-how-does-it-happen-with-your-application-b9238a8f0514
 
+
+    //code adapted from Code with Cal, 2023
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+    //end of adapted code
         val shareButton = binding.tabShare
         val printButton = binding.tabPrint
 
@@ -46,6 +49,7 @@ class BottomSheet(private val tab:Song) : BottomSheetDialogFragment() {
 
             val file = File(path, fileName)
 
+            //code adapted from N. Leo, 2019
             // Check if file exists before proceeding
             if (file.exists()) {
                 val apkURI: Uri? = context?.let { it1 ->
@@ -73,6 +77,8 @@ class BottomSheet(private val tab:Song) : BottomSheetDialogFragment() {
                 // Handle case where file does not exist
                 Toast.makeText(requireContext(), "File does not exist", Toast.LENGTH_SHORT).show()
             }
+
+            //end of adapted code
         }
 
         printButton.setOnClickListener {
@@ -83,8 +89,7 @@ class BottomSheet(private val tab:Song) : BottomSheetDialogFragment() {
         }
     }
 
-
-
+        //code adapted from Code with Cal, 2023
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -93,6 +98,7 @@ class BottomSheet(private val tab:Song) : BottomSheetDialogFragment() {
         binding = FragmentBottomSheetBinding.inflate(inflater,container,false)
         return binding.root
     }
+        //end of adapted code
 
 
     //building the tab sheet
@@ -113,15 +119,16 @@ class BottomSheet(private val tab:Song) : BottomSheetDialogFragment() {
 
     }
 
-    //https://www.youtube.com/watch?v=wc4p6sYR3B4&t=90s
     //writing the data to a text file
     private fun writeToFile(fileName:String, content:String){
 
+        //code adapted from IJ Apps, 2021
 
         val writer = FileOutputStream(File(path, fileName))
         writer.write(content.toByteArray())
         writer.close()
 
+        //end of adapted code
 
     }
 

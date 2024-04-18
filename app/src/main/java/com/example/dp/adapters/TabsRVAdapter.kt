@@ -15,6 +15,7 @@ import com.example.dp.activities.MainActivity
 import com.example.dp.activities.SetActivity
 import com.example.dp.models.TabsViewModel
 
+//code adapted from geeksforgeeks, 2021
 class TabsRVAdapter(
     private var mList: List<TabsViewModel>,
     private val listener: OnItemClickListener,
@@ -47,7 +48,7 @@ class TabsRVAdapter(
         return ViewHolder(view)
     }
 
-//    https://www.geeksforgeeks.org/android-searchview-with-recyclerview-using-kotlin/
+    //code adapted from geeksforgeeks, 2022
     @SuppressLint("NotifyDataSetChanged")
     fun filterList(filterlist: ArrayList<TabsViewModel>) {
         // below line is to add our filtered
@@ -57,6 +58,8 @@ class TabsRVAdapter(
         // as change in recycler view data.
         notifyDataSetChanged()
     }
+
+    //end of adapted code
 
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -139,6 +142,8 @@ class TabsRVAdapter(
 
 
 }
+
+//end of adapted code
 
 
 
